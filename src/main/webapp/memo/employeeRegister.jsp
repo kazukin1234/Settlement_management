@@ -63,11 +63,14 @@
           <input type="text" name="position_id" required maxlength="5">
         </div>
       </div>
+      
       <div class="btn-section">
         <button type="submit">登録</button>
         <button type="reset">リセット</button>
       </div>
     </form>
+    
+    
   </div>
 </body>
 </html>
