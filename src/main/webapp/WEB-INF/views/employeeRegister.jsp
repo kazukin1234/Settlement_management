@@ -37,7 +37,7 @@ h2 {
 </head>
 <body>
 	<div class="page-container">
-		<h2>社員登録フォーム</h2>
+		<h2>${pageTitle}</h2>
 
 		<%-- Hiển thị lỗi nếu có --%>
 

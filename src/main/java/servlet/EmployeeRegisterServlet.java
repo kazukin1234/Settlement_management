@@ -38,10 +38,24 @@ public class EmployeeRegisterServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String editId = (String) session.getAttribute("editEmployeeId");
 
-		if (editId != null) {
+	    String mode = request.getParameter("mode"); // 新規 or 編集判定
+		
+		if ("new".equals(mode)) {
+	        session.removeAttribute("editEmployeeId"); // 新規の場合、編集用IDは削除
+	        request.setAttribute("pageTitle", "社員新規登録フォーム");
+	    } 
+		
+		
+		
+		
+		
+		else if (editId != null) {
 			// Nếu có ID từ session, tức là đang edit
 			EmployeeDAO dao = new EmployeeDAO();
 			Employee emp = dao.findById(editId);
+			
+			request.setAttribute("pageTitle", "社員編集フォーム");
+			
 
 			if (emp != null) {
 				request.setAttribute("employeeId", emp.getEmployeeId());
@@ -72,8 +86,8 @@ public class EmployeeRegisterServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
-
 		HttpSession session = request.getSession();
+	
 
 		// Lấy dữ liệu
 		String employeeId = request.getParameter("employeeId");
