@@ -65,6 +65,13 @@ public class ProjectControl extends HttpServlet {
 		HttpSession session = request.getSession();
 
 		String[] Project_code = request.getParameterValues("Project_code");
+		
+	
+		
+		
+		
+		
+		
 		switch (action) {
 		case "add": {
 			// 登録画面遷移のみ
@@ -82,10 +89,24 @@ public class ProjectControl extends HttpServlet {
 			request.setAttribute("allStaff", allStaff);
 			request.setAttribute("project_edit", p);
 
+			
+
+			// 確認画面に遷移する直前
+			
+			if ("edit".equals(action)) {
+			    request.setAttribute("register", "updateFinal");
+			}
+			request.setAttribute("screenMode", "edit");
+
+			
 			request.getRequestDispatcher("/WEB-INF/views/projectRegister.jsp").forward(request, response);
 			return;
 		}
 
+
+		
+		
+		
 		case "delete": {
 			try {
 				// ✅ 論理削除メソッドを呼び出す
@@ -99,6 +120,11 @@ public class ProjectControl extends HttpServlet {
 			return;
 		}
 
+	
+		
+		
+		
+		
 		case "confirmInsert":
 		case "confirmUpdate": {
 			ProjectList p = new ProjectList();
@@ -153,6 +179,31 @@ public class ProjectControl extends HttpServlet {
 				p.setProject_members(memberStr != null ? memberStr : "");
 
 				ProjectDAO dao = new ProjectDAO();
+				
+				
+
+		        // ── ここで重複チェック ──
+		        if (dao.existsProjectCode(p.getProject_code())) {
+		            request.setAttribute("errorMsg", "このプロジェクトコードは過去に登録されています。");
+		            request.setAttribute("project_edit", p);
+		            request.setAttribute("screenMode", "insert");
+		            request.getRequestDispatcher("/WEB-INF/views/projectRegister.jsp").forward(request, response);
+		            return;
+		        }
+
+		        // メンバーIDの存在チェック
+		        if (memberStr != null && !memberStr.isEmpty()) {
+		            String[] memberIds = memberStr.split("\\s*,\\s*");
+		            if (!dao.areStaffIdsValid(memberIds)) {
+		                request.setAttribute("errorMsg", "存在しない社員IDが含まれています。");
+		                request.setAttribute("project_edit", p);
+		                request.setAttribute("screenMode", "insert");
+		                request.getRequestDispatcher("/WEB-INF/views/projectRegister.jsp").forward(request, response);
+		                return;
+		            }
+		        }
+				
+
 
 				if (memberStr != null && !memberStr.isEmpty()) {
 					String[] memberIds = memberStr.split("\\s*,\\s*");

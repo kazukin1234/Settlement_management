@@ -35,6 +35,7 @@ public class LoginServlet extends HttpServlet {
         EmployeeDAO dao = new EmployeeDAO();
         Employee staff = dao.findByIdAndPassword(staffId, password);
 
+        
         if (staff != null) {
             HttpSession session = request.getSession();
 
