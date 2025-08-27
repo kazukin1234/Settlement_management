@@ -101,7 +101,14 @@ public class ApplicationDetailServlet extends HttpServlet {
                     request.setAttribute("showPaymentActionButton", true); // Bật cờ cho nút "Thanh toán"
                     request.setAttribute("backActionUrl", "/payment"); // Quay về trang quản lý thanh toán
 
-                } else {
+                } else if ("exportReimbursement".equals(context)) {
+                    request.setAttribute("showExportButton", true);
+                    request.setAttribute("showEditButton", false);
+                    request.setAttribute("showApprovalActionButtons", false);
+                    request.setAttribute("backActionUrl", "/Export_reimbursement"); // Quay về trang quản lý thanh toán
+                    
+                }
+                else {
                     // --- Cấu hình cho NHÂN VIÊN (mặc định) ---
                     request.setAttribute("showEditButton", true);
                     request.setAttribute("showApprovalActionButtons", false);

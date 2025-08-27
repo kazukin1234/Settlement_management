@@ -20,27 +20,31 @@ import dao.PaymentDAO;
 @WebServlet("/Export_reimbursement")
 public class Export_reimbursementServlet extends HttpServlet {
 
-	
 	@Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            PaymentDAO dao = new PaymentDAO();
-            List<PaymentBean> paymentList = dao.reimbursementAll();
-            req.setAttribute("paymentList", paymentList);
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    try {
+	        // DAOから立替金一覧を取得
+	        PaymentDAO dao = new PaymentDAO();
+	        List<PaymentBean> paymentList = dao.reimbursementAll();
+	        req.setAttribute("paymentList", paymentList);
 
-            String context = req.getParameter("context");
-            if ("exportReimbursement".equals(context)) {
-                req.setAttribute("mode", "export");
-            }
+	        // エクスポートボタンは常に表示する場合
+	        req.setAttribute("showExportButton", true);  // Boolean型で渡す
 
-            req.getRequestDispatcher("/WEB-INF/views/serviceJSP/export_tatekaekinn.jsp")
-                    .forward(req, resp);
+	       
+			// モードを export に設定
+	        req.setAttribute("mode", "export");
 
-        } catch (Exception e) {
-            throw new ServletException(e);
-        }
-    }
-	
+
+	        // JSP にフォワード
+	        req.getRequestDispatcher("/WEB-INF/views/serviceJSP/export_tatekaekinn.jsp")
+	           .forward(req, resp);
+
+	    } catch (Exception e) {
+	        throw new ServletException(e);
+	    }
+	}
+
 	
 	
 	  @Override

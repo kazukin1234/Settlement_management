@@ -61,6 +61,15 @@
                     onclick="return confirm('この申請を支払済みにします。よろしいですか？')">支払済</button>
         </form>
     </c:if>
+    
+    
+    <c:if test="${showExportButton}">
+    <form action="${pageContext.request.contextPath}/Export_reimbursement" method="post" style="display:inline;">
+        <input type="hidden" name="appIds" value="${applicationId}">
+        <button type="submit" class="approve-btn" onclick="return confirm('excelファイルでエクスポートします。よろしいですか？')">エクスポート</button>
+    </form>
+</c:if>
+    
 
 </div>
 <div class="footer">
