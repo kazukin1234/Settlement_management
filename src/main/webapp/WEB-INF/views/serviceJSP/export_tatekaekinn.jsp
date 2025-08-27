@@ -14,7 +14,7 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <script src="<%=request.getContextPath()%>/static/js/script.js"></script>
 </head>
-<body data-mode="${mode}" data-context-path="${pageContext.request.contextPath}">
+<body data-mode="${mode2}" data-context-path="${pageContext.request.contextPath}">
 
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<div class="page-container">
@@ -135,14 +135,14 @@
 	    }
 	    
 	    const id = this.dataset.id;
-	    const mode = document.body.dataset.mode; 
+	    const mode2 = document.body.dataset.mode2; 
 	    
 	    let url = 'applicationDetail?id=' + id;
 	    
-	    if (mode == 'export') {
+	    if (mode2 == 'export') {
 	      url += '&context=exportReimbursement';
 
-	    } else if (mode == 'payment') {
+	    } else if (mode2 == 'payment') {
 	      url += '&context=payment';
 	    }
 	  

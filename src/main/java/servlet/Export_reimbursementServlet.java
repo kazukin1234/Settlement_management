@@ -28,12 +28,14 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        List<PaymentBean> paymentList = dao.reimbursementAll();
 	        req.setAttribute("paymentList", paymentList);
 
-	        // エクスポートボタンは常に表示する場合
-	        req.setAttribute("showExportButton", true);  // Boolean型で渡す
+	     
+	     // モードを export に設定
+	        //String mode = "export";
+	        req.setAttribute("mode2", "export");
 
+	        req.setAttribute("showExportButton", true);
 	       
-			// モードを export に設定
-	        req.setAttribute("mode", "export");
+
 
 
 	        // JSP にフォワード
