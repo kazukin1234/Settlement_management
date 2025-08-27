@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
 		<attributes>
+			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -20,15 +21,15 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/jakarta.servlet.jsp.jstl-api-3.0.0.jar"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
 		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="test" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -38,5 +39,26 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="var" path="JRE_LIB"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/poi-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/poi-examples-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/poi-excelant-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/poi-ooxml-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/poi-ooxml-schemas-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/poi-scratchpad-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/activation-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/commons-codec-1.13.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/commons-collections4-4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/commons-compress-1.19.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/commons-math3-3.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/jaxb-api-2.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/jaxb-core-2.3.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/jaxb-impl-2.3.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/lib/SparseBitSet-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/ooxml-lib/curvesapi-1.06.jar"/>
+	<classpathentry kind="lib" path="C:/Users/kkumagai/git/Settlement_management_new/src/main/webapp/WEB-INF/lib/poi-bin-4.1.2-20200217/poi-4.1.2/ooxml-lib/xmlbeans-3.1.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
