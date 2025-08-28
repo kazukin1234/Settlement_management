@@ -64,9 +64,10 @@ public class ProjectControl extends HttpServlet {
 
 		HttpSession session = request.getSession();
 
+		//この２つのラベルをつくる、ダオとつながる
 		String[] Project_code = request.getParameterValues("Project_code");
-		
-	
+		String ProjectCode = request.getParameter("Project_code");
+
 		
 		
 		
@@ -189,6 +190,8 @@ public class ProjectControl extends HttpServlet {
 		            request.getRequestDispatcher("/WEB-INF/views/projectRegister.jsp").forward(request, response);
 		            return;
 		        }
+		        
+		        
 
 		        // メンバーIDの存在チェック
 		        if (memberStr != null && !memberStr.isEmpty()) {
@@ -215,7 +218,8 @@ public class ProjectControl extends HttpServlet {
 		    }
 		}
 
-		case "updateFinal": {
+		case "updateFinal": 
+		{
 		    try {
 		        ProjectList p = new ProjectList();
 		        p.setProject_code(request.getParameter("Project_code"));
