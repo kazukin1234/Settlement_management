@@ -164,27 +164,26 @@ public class ProjectControl extends HttpServlet {
 		}
 
 		case "register": {
-			try {
-				ProjectList p = new ProjectList();
-				p.setProject_code(request.getParameter("Project_code"));
-				p.setProject_name(request.getParameter("Project_name"));
-				p.setProject_owner(request.getParameter("Project_owner"));
-				p.setStart_date(request.getParameter("Start_date"));
-				p.setEnd_date(request.getParameter("End_date"));
+		    try {
+		        ProjectList p = new ProjectList();
+		        p.setProject_code(request.getParameter("Project_code"));
+		        p.setProject_name(request.getParameter("Project_name"));
+		        p.setProject_owner(request.getParameter("Project_owner"));
+		        p.setStart_date(request.getParameter("Start_date"));
+		        p.setEnd_date(request.getParameter("End_date"));
 
-				String budgetStr = request.getParameter("Project_budget");
-				p.setProject_budget((budgetStr == null || budgetStr.isEmpty()) ? null : Integer.parseInt(budgetStr));
+		        String budgetStr = request.getParameter("Project_budget");
+		        p.setProject_budget((budgetStr == null || budgetStr.isEmpty()) ? null : Integer.parseInt(budgetStr));
 
-				String memberStr = request.getParameter("memberIds");
-				p.setProject_members(memberStr != null ? memberStr : "");
+		        String memberStr = request.getParameter("memberIds");
+		        p.setProject_members(memberStr != null ? memberStr : "");
 
-				ProjectDAO dao = new ProjectDAO();
-				
-				
+		        ProjectDAO dao = new ProjectDAO();
 
+		        
 		        // ── ここで重複チェック ──
 		        if (dao.existsProjectCode(p.getProject_code())) {
-		            request.setAttribute("errorMsg", "このプロジェクトコードは過去に登録されています。");
+		            request.setAttribute("errorMsg", "このプロジェクトコードはすでに登録されています。");
 		            request.setAttribute("project_edit", p);
 		            request.setAttribute("screenMode", "insert");
 		            request.getRequestDispatcher("/WEB-INF/views/projectRegister.jsp").forward(request, response);
@@ -202,72 +201,71 @@ public class ProjectControl extends HttpServlet {
 		                return;
 		            }
 		        }
-				
 
+		        dao.insertProject(p);
+		        session.setAttribute("successMsg", "登録が完了しました！");
+		        response.sendRedirect("project_management_view");
+		        return;
 
-				if (memberStr != null && !memberStr.isEmpty()) {
-					String[] memberIds = memberStr.split("\\s*,\\s*");
-					if (!dao.areStaffIdsValid(memberIds)) {
-						request.setAttribute("errorMsg", "メンバーに存在しない社員IDが含まれています。");
-						request.setAttribute("project_edit", p);
-						request.setAttribute("screenMode", "insert");
-						request.getRequestDispatcher("/WEB-INF/views/projectRegister.jsp").forward(request, response);
-						return;
-					}
-				}
-
-				dao.insertProject(p);
-				session.setAttribute("successMsg", "登録が完了しました！");
-				response.sendRedirect("project_management_view");
-				return;
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				session.setAttribute("errorMsg", "登録処理に失敗しました。");
-				response.sendRedirect("project_management_view");
-				return;
-			}
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        session.setAttribute("errorMsg", "登録処理に失敗しました。");
+		        response.sendRedirect("project_management_view");
+		        return;
+		    }
 		}
 
 		case "updateFinal": {
-			try {
-				ProjectList p = new ProjectList();
-				p.setProject_code(request.getParameter("Project_code"));
-				p.setProject_name(request.getParameter("Project_name"));
-				p.setProject_owner(request.getParameter("Project_owner"));
-				p.setStart_date(request.getParameter("Start_date"));
-				p.setEnd_date(request.getParameter("End_date"));
+		    try {
+		        ProjectList p = new ProjectList();
+		        p.setProject_code(request.getParameter("Project_code"));
+		        p.setProject_name(request.getParameter("Project_name"));
+		        p.setProject_owner(request.getParameter("Project_owner"));
+		        p.setStart_date(request.getParameter("Start_date"));
+		        p.setEnd_date(request.getParameter("End_date"));
 
-				String budgetStr = request.getParameter("Project_budget");
-				p.setProject_budget((budgetStr == null || budgetStr.isEmpty()) ? null : Integer.parseInt(budgetStr));
+		        String budgetStr = request.getParameter("Project_budget");
+		        p.setProject_budget((budgetStr == null || budgetStr.isEmpty()) ? null : Integer.parseInt(budgetStr));
 
-				String memberStr = request.getParameter("memberIds");
-				p.setProject_members(memberStr != null ? memberStr : "");
+		        String memberStr = request.getParameter("memberIds");
+		        p.setProject_members(memberStr != null ? memberStr : "");
 
-				ProjectDAO dao = new ProjectDAO();
+		        ProjectDAO dao = new ProjectDAO();
 
-				if (memberStr != null && !memberStr.isEmpty()) {
-					String[] memberIds = memberStr.split("\\s*,\\s*");
-					if (!dao.areStaffIdsValid(memberIds)) {
-						request.setAttribute("errorMsg", "メンバーに存在しない社員IDが含まれています。");
-						request.setAttribute("project_edit", p);
-						request.setAttribute("screenMode", "edit");
-						request.getRequestDispatcher("/WEB-INF/views/projectRegister.jsp").forward(request, response);
-						return;
-					}
-				}
+		        // ── 更新時は自分自身を除外して重複チェック ──
+		        if (dao.existsProjectCodeExcept(p.getProject_code(), p.getProject_code())) {
+		            request.setAttribute("errorMsg", "このプロジェクトコードはすでに登録されています。");
+		            request.setAttribute("project_edit", p);
+		            request.setAttribute("screenMode", "edit");
+		            request.getRequestDispatcher("/WEB-INF/views/projectRegister.jsp").forward(request, response);
+		            return;
+		        }
+		        
+		        
 
-				dao.updateProject(p);
-				session.setAttribute("successMsg", "更新が完了しました！");
-				response.sendRedirect("project_management_view");
-				return;
+		        // メンバーIDの存在チェック
+		        if (memberStr != null && !memberStr.isEmpty()) {
+		            String[] memberIds = memberStr.split("\\s*,\\s*");
+		            if (!dao.areStaffIdsValid(memberIds)) {
+		                request.setAttribute("errorMsg", "存在しない社員IDが含まれています。");
+		                request.setAttribute("project_edit", p);
+		                request.setAttribute("screenMode", "edit");
+		                request.getRequestDispatcher("/WEB-INF/views/projectRegister.jsp").forward(request, response);
+		                return;
+		            }
+		        }
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				session.setAttribute("errorMsg", "更新処理に失敗しました。");
-				response.sendRedirect("project_management_view");
-				return;
-			}
+		        dao.updateProject(p);
+		        session.setAttribute("successMsg", "更新が完了しました！");
+		        response.sendRedirect("project_management_view");
+		        return;
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        session.setAttribute("errorMsg", "更新処理に失敗しました。");
+		        response.sendRedirect("project_management_view");
+		        return;
+		    }
 		}
 
 		default:

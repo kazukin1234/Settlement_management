@@ -28,16 +28,16 @@ public class ProjectDAO {
 	
 	
 	/**
-	 * 指定されたプロジェクトコードが既に存在するかを確認する
+	 * 指定されたプロジェクトコードが既に存在するか確認する
 	 *
 	 * @param projectCode プロジェクトコード
-	 * @return 存在すれば true、存在しなければ false
+	 * @return 既に存在する場合は true、存在しなければ false
 	 */
-	public boolean existsProjectCode(String project_code){
+	public boolean existsProjectCode(String projectCode) {
 	    String sql = "SELECT COUNT(*) FROM project_manage WHERE project_code = ? AND delete_flag = 0";
 	    try (Connection conn = DBConnection.getConnection();
 	         PreparedStatement ps = conn.prepareStatement(sql)) {
-	        ps.setString(1, project_code);
+	        ps.setString(1, projectCode);
 	        try (ResultSet rs = ps.executeQuery()) {
 	            if (rs.next()) {
 	                return rs.getInt(1) > 0;
@@ -49,15 +49,26 @@ public class ProjectDAO {
 	    return false;
 	}
 
+	
+	
+	// 更新時に自分以外で重複があるか確認
+	public boolean existsProjectCodeExcept(String projectCode, String excludeCode) {
+	    String sql = "SELECT COUNT(*) FROM project_manage WHERE project_code = ? AND project_code <> ? AND delete_flag = 0";
+	    try (Connection conn = DBConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, projectCode);
+	        ps.setString(2, excludeCode);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt(1) > 0;
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
 
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	/**
