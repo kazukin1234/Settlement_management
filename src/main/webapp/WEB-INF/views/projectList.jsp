@@ -71,6 +71,7 @@ ArrayList<ProjectList> list = (ArrayList<ProjectList>)request.getAttribute("proj
 						</tr>
 					</thead>
 					<tbody>
+					
 						<%
 				for(ProjectList bean:list) {
 					// nullでないなら、数値項目をカンマ区切りに直す
