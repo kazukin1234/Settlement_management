@@ -138,11 +138,9 @@
 	    const mode2 = document.body.dataset.mode2; 
 	    
 	    let url = 'applicationDetail?id=' + id;
-	    
-	    if (mode2 == 'export') {
-	      url += '&context=exportReimbursement';
+	    url += '&context=exportReimbursement';
 
-	    } else if (mode2 == 'payment') {
+	      if (mode2 == 'payment') {
 	      url += '&context=payment';
 	    }
 	  

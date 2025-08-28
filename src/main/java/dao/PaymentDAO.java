@@ -83,9 +83,9 @@ public class PaymentDAO {
 
         String sql = "SELECT a.application_id, "+
         	    "a.staff_id, s.name AS staff_name,a.application_type,a.created_at, "
-        	    + " a.updated_at, a.amount, a.status　FROM application_header a "
-        	    + "LEFT JOIN staff s ON a.staff_id = s.staff_id　WHERE a.delete_flag = 0 AND a.status IN ('承認済み', '支払済み')"
-        	  +"AND a.application_type = '立替金'ORDER BY a.created_at DESC";
+        	    + " a.updated_at, a.amount, a.status FROM application_header a "
+        	    + "LEFT JOIN staff s ON a.staff_id = s.staff_id WHERE a.delete_flag = 0 AND a.status IN ('承認済み', '支払済み')"
+        	  +"AND a.application_type = '立替金' ORDER BY a.created_at DESC";
 
 
         try (Connection conn = DBConnection.getConnection();
