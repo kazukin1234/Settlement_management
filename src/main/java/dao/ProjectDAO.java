@@ -26,50 +26,7 @@ import util.DBConnection;
  */
 public class ProjectDAO {
 	
-	
-	/**
-	 * 指定されたプロジェクトコードが既に存在するか確認する
-	 *
-	 * @param projectCode プロジェクトコード
-	 * @return 既に存在する場合は true、存在しなければ false
-	 */
-	public boolean existsProjectCode(String projectCode) {
-	    String sql = "SELECT COUNT(*) FROM project_manage WHERE project_code = ? AND delete_flag = 0";
-	    try (Connection conn = DBConnection.getConnection();
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-	        ps.setString(1, projectCode);
-	        try (ResultSet rs = ps.executeQuery()) {
-	            if (rs.next()) {
-	                return rs.getInt(1) > 0;
-	            }
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return false;
-	}
 
-	
-	
-	// 更新時に自分以外で重複があるか確認
-	public boolean existsProjectCodeExcept(String projectCode, String excludeCode) {
-	    String sql = "SELECT COUNT(*) FROM project_manage WHERE project_code = ? AND project_code <> ? AND delete_flag = 0";
-	    try (Connection conn = DBConnection.getConnection();
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-	        ps.setString(1, projectCode);
-	        ps.setString(2, excludeCode);
-	        try (ResultSet rs = ps.executeQuery()) {
-	            if (rs.next()) {
-	                return rs.getInt(1) > 0;
-	            }
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return false;
-	}
-
-	
 	
 	/**
 	 * 指定された社員IDに割り当てられているプロジェクトの一覧を取得します。
@@ -531,6 +488,50 @@ public class ProjectDAO {
 
 
 
+	/**
+	 * 指定されたプロジェクトコードが既に存在するか確認する
+	 *
+	 * @param projectCode プロジェクトコード
+	 * @return 既に存在する場合は true、存在しなければ false
+	 */
+	public boolean existsProjectCode(String projectCode) {
+	    String sql = "SELECT COUNT(*) FROM project_manage WHERE project_code = ? AND delete_flag = 0";
+	    try (Connection conn = DBConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, projectCode);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt(1) > 0;
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return true;
+	    }
+	    return false;
+	}
+
+	
+	
+	// 更新時に自分以外で重複があるか確認
+	public boolean existsProjectCodeExcept(String projectCode, String excludeCode) {
+	    String sql = "SELECT COUNT(*) FROM project_manage WHERE project_code = ? AND project_code <> ? AND delete_flag = 0";
+	    try (Connection conn = DBConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, projectCode);
+	        ps.setString(2, excludeCode);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt(1) > 0;
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+	
 
 
 

@@ -48,6 +48,8 @@ public class ProjectManagementServlet extends HttpServlet {
                 session.removeAttribute("errorMsg");
             }
 
+            req.setAttribute("list", projectList_management);
+
             req.getRequestDispatcher("/WEB-INF/views/projectList.jsp").forward(req, resp);
         } catch (Exception e) {
             throw new ServletException(e);
