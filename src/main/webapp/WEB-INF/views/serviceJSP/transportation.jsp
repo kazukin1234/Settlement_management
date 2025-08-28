@@ -124,7 +124,7 @@
         </c:forEach>
       </select>
     </div>
-    <div class="form-group"><label>報告書</label><textarea required name="report[]" placeholder="報告書を書いてください！"></textarea></div>
+    <div class="form-group"><label>報告書</label><textarea required name="report[]" placeholder="報告書を書いてください"></textarea></div>
     <div class="form-group"><label>訪問先</label><input type="text" name="destination[]" placeholder="例: ABC株式会社" required></div>
     <div class="form-group"><label>出発</label><input required type="text" name="departure[]" placeholder="例:東京駅"></div>
     <div class="form-group"><label>到着</label><input required type="text" name="arrival[]" placeholder="例:大阪駅"></div>
