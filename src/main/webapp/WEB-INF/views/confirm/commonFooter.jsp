@@ -48,7 +48,7 @@
         <form action="${pageContext.request.contextPath}/approverApplications" method="post" style="display:inline;">
             <input type="hidden" name="action" value="approval">
             <input type="hidden" name="appIds" value="${applicationId}">
-            <button type="submit" class="approve-btn" onclick="return confirm('この申請を承認します。よろしいですか？')">承認</button>
+            <button type="submit" class="approve-btn2" onclick="return confirm('この申請を承認します。よろしいですか？')">承認</button>
         </form>
     </c:if>
 
@@ -66,7 +66,7 @@
     <c:if test="${showExportButton}">
     <form action="${pageContext.request.contextPath}/Export_reimbursement" method="post" style="display:inline;">
         <input type="hidden" name="appIds" value="${applicationId}">
-        <button type="submit" class="approve-btn" onclick="return confirm('excelファイルでエクスポートします。よろしいですか？')">エクスポート</button>
+        <button type="submit" class="approve-btn" onclick="return confirm('excelファイルでエクスポートします。よろしいですか？')">エクスポート(.xlsx)</button>
     </form>
 </c:if>
     

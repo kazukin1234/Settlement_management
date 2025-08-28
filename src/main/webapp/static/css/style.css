@@ -1,5 +1,44 @@
 /* ==== 共通設定 ==== */
 
+
+.approve-btn2 {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    min-width: 70px;  
+}
+
+.approve-btn2:hover {
+    background: var(--primary-color-hover);
+}
+
+
+
+.approve-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    min-width: 200px;  
+}
+
+.approve-btn:hover {
+    background: var(--primary-color-hover);
+}
+
+
+
+
+
 :root {
 	--primary-color: #00a1bb;
 	--primary-color-hover: #00889d;
