@@ -88,6 +88,10 @@ public class EmployeeRegisterServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		HttpSession session = request.getSession();
 	
+		
+	        EmployeeDAO dao = new EmployeeDAO();
+
+	
 
 		// Lấy dữ liệu
 		String employeeId = request.getParameter("employeeId");
@@ -108,6 +112,27 @@ public class EmployeeRegisterServlet extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/views/employeeRegister.jsp").forward(request, response);
 				return;
 			}
+			
+			
+			
+			 // 登録 or 更新の判定
+            String editEmployeeId = (String) session.getAttribute("editEmployeeId");
+
+            if (editEmployeeId == null) {
+                // 新規登録時 → ID重複チェック
+                if (dao.existsById(employeeId)) {
+                    request.setAttribute("error", "この社員IDは既に存在します。");
+                    request.getRequestDispatcher("/WEB-INF/views/employeeRegister.jsp").forward(request, response);
+                    return;
+                }
+            } else {
+                // 更新時 → 自分以外のIDと重複していないか確認
+                if (dao.existsByIdExceptSelf(employeeId, editEmployeeId)) {
+                    request.setAttribute("error", "この社員IDは既に存在します。");
+                    request.getRequestDispatcher("/WEB-INF/views/employeeRegister.jsp").forward(request, response);
+                    return;
+                }
+            }
 
 			// Tạo Employee và lưu session
 			Employee emp = new Employee();
@@ -131,7 +156,6 @@ public class EmployeeRegisterServlet extends HttpServlet {
 		        return;
 		    }
 
-		    EmployeeDAO dao = new EmployeeDAO();
 		    boolean result = false;
 
 		    try {
@@ -186,6 +210,29 @@ public class EmployeeRegisterServlet extends HttpServlet {
 		}
 
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 

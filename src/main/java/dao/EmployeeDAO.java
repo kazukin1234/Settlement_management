@@ -247,4 +247,64 @@ public class EmployeeDAO {
 			return false;
 		}
 	}
+	
+	
+	/**
+	 * 新規登録用: 指定した社員IDが存在するかどうかを確認する
+	 * @param staffId 社員ID
+	 * @return 存在すれば true、存在しなければ false
+	 */
+	public boolean existsById(String staffId) {
+	    String sql = "SELECT COUNT(*) FROM staff WHERE staff_id = ? AND delete_flag IN (0, 9)";
+
+	    try (Connection conn = DBConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setString(1, staffId);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace(); // 実際の運用ではログに変更
+	    }
+	    return false;
+	}
+
+	
+	/**
+	 * 更新用: 指定した社員IDが、自分以外のレコードに存在するか確認する
+	 * @param staffId チェック対象の社員ID
+	 * @param excludeStaffId 除外する社員ID（自分自身）
+	 * @return 存在すれば true、存在しなければ false
+	 */
+	
+	public boolean existsByIdExceptSelf(String staffId, String excludeStaffId) {
+	    String sql = "SELECT COUNT(*) FROM staff WHERE staff_id = ? AND staff_id <> ? AND delete_flag IN (0, 9)";
+
+	    try (Connection conn = DBConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setString(1, staffId);
+	        ps.setString(2, excludeStaffId);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -57,6 +57,11 @@ public class EmployeeListServlet extends HttpServlet {
         String success = (String) session.getAttribute("success");
         session.removeAttribute("success");
 
+        String employeeId = request.getParameter("employeeId");
+
+        
+        
+        
         request.setAttribute("success", success);
         request.setAttribute("employeeList", employeeList);
         request.getRequestDispatcher("/WEB-INF/views/employeeList.jsp").forward(request, response);
