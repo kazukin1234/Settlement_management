@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -82,13 +84,17 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        // ブラウザにダウンロード
 	        resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 	        
-	        PaymentBean p = paymentList.get(0); // 例として最初の申請の情報を使う場合
-	        LocalDateTime createdAt = p.getCreatedAt().toLocalDateTime(); // Timestampなら変換が必要
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm");
-	        String fileName = "立替金申請_" + createdAt.format(formatter) + "_" + p.getStaffName() + ".xlsx";
+	  
+	        // ファイル名を作成
+	        PaymentBean p = paymentList.get(0);
+	        LocalDateTime createdAt = p.getCreatedAt().toLocalDateTime();
+	        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm");
+	        String rawFileName = "立替金申請_" + createdAt.format(formatter1) + "_" + p.getStaffName() + ".xlsx";
 
-	        resp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-	        
+	        // URLエンコードしてヘッダにセット
+	        String encodedFileName = URLEncoder.encode(rawFileName, StandardCharsets.UTF_8.toString());
+	        resp.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFileName);
+
 	        workbook.write(resp.getOutputStream());
 	        workbook.close();
 
