@@ -1,5 +1,6 @@
 package servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -12,7 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import bean.PaymentBean;
 import dao.PaymentDAO;
@@ -51,30 +53,24 @@ public class Export_reimbursementServlet extends HttpServlet {
 	 @Override
 	    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	        try {
-	            //PaymentDAO dao = new PaymentDAO();
-	            //List<PaymentBean> paymentList = dao.reimbursementAll();
+	        		    //エクセルファイルへアクセスするためのオブジェクト
+	        		    Workbook excel = WorkbookFactory.create(new File("Sample.xlsx"));
 
-	            // Excel作成
-	            XSSFWorkbook workbook = new XSSFWorkbook();
-	            Sheet sheet = workbook.createSheet("test");
-	            Row row0 = sheet.createRow(0);
-	            Row row1 = sheet.createRow(1);
-	            Row row2 = sheet.createRow(2);
+	        		    // シート名がわかっている場合
+	        		    Sheet sheet = excel.getSheet("Sheet1");
 
-	            Cell cell0 = row0.createCell(0);
-	            Cell cell1 = row1.createCell(1);
-	            Cell cell2 = row2.createCell(2);
+	        		    //0行目
+	        		    Row row = sheet.getRow(0);
 
-	            cell0.setCellValue("Excelを出力してみた");
-	            cell1.setCellValue(100 / 3.14);
-	            cell2.setCellValue(12345.9876);
+	        		    //0番目のセル
+	        		    Cell cell = row.getCell(0);
 
-	            // ブラウザに直接ダウンロードさせる
-	            resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-	            resp.setHeader("Content-Disposition", "attachment; filename=\"sampleExcelout.xlsx\"");
+	        		    //文字列の取得
+	        		    String value = cell.getStringCellValue();
 
-	            workbook.write(resp.getOutputStream());
-	            workbook.close();
+	        		    //取得した文字列の表示
+	        		    System.out.println(value);
+	        		  
 
 	        } catch (Exception e) {
 	            throw new ServletException(e);
