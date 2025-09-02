@@ -1,6 +1,5 @@
 package servlet;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,11 +9,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import bean.PaymentBean;
 import dao.PaymentDAO;
@@ -50,34 +47,48 @@ public class Export_reimbursementServlet extends HttpServlet {
 	}
 
 	
-	 @Override
-	    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		 try {
-			    // Tomcat上での絶対パスを取得
-			    String path = getServletContext().getRealPath("/WEB-INF/resources/Sample.xlsx");
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    try {
+	        // DAOから立替金一覧を取得
+	        PaymentDAO dao = new PaymentDAO();
+	        List<PaymentBean> paymentList = dao.reimbursementAll();
 
-			    // Excelファイルを開く
-			    Workbook excel = WorkbookFactory.create(new File(path));
+	        // Excel作成
+	        XSSFWorkbook workbook = new XSSFWorkbook();
+	        Sheet sheet = workbook.createSheet("立替金一覧");
 
-			    // シート取得
-			    Sheet sheet = excel.getSheet("Sheet1");
+	        // ヘッダー行
+	        Row header = sheet.createRow(0);
+	        String[] columns = {"申請ID", "社員ID", "社員名", "申請種別", "申請時間", "金額（税込）", "ステータス"};
+	        for (int i = 0; i < columns.length; i++) {
+	        	header.createCell(i).setCellValue(columns[i]);
+	        }
 
-			    // 0行目、0列目
-			    Row row = sheet.getRow(0);
-			    Cell cell = row.getCell(0);
+	        // データ行
+	        int rowNum = 1;
+	        for (PaymentBean p : paymentList) {
+	            Row row = sheet.createRow(rowNum++);
+	            row.createCell(0).setCellValue(p.getApplicationId());
+	            row.createCell(1).setCellValue(p.getStaffId());
+	            row.createCell(2).setCellValue(p.getStaffName());
+	            row.createCell(3).setCellValue(p.getApplicationType());
+	            row.createCell(4).setCellValue(p.getCreatedAt().toString());
+	            row.createCell(5).setCellValue(p.getAmount());
+	            row.createCell(6).setCellValue(p.getStatus());
+	        }
 
-			    // 値を取得
-			    String value = cell.getStringCellValue();
-			    System.out.println(value);
+	        // ブラウザにダウンロード
+	        resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+	        resp.setHeader("Content-Disposition", "attachment; filename=\"reimbursement.xlsx\"");
+	        workbook.write(resp.getOutputStream());
+	        workbook.close();
 
-			    excel.close();
-			} catch (Exception e) {
-			    throw new ServletException(e);
-			}
-
+	    } catch (Exception e) {
+	        throw new ServletException(e);
 	    }
-	 
-	 
+	}
+
 	 
 	 
 	}
