@@ -54,7 +54,7 @@ public class Export_reimbursementServlet extends HttpServlet {
 	    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	        try {
 	        		    //エクセルファイルへアクセスするためのオブジェクト
-	        		    Workbook excel = WorkbookFactory.create(new File("Sample.xlsx"));
+	        		    Workbook excel = WorkbookFactory.create(new File("\"C:\\Users\\kkumagai\\git\\Settlement_management_new\\src\\main\\webapp\\WEB-INF\\lib\\Sample.xlsx\""));
 
 	        		    // シート名がわかっている場合
 	        		    Sheet sheet = excel.getSheet("Sheet1");
