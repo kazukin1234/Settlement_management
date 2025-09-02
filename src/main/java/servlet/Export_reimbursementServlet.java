@@ -48,12 +48,11 @@ public class Export_reimbursementServlet extends HttpServlet {
 	}
 
 	
-	
-	  @Override
+	 @Override
 	    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	        try {
-	            PaymentDAO dao = new PaymentDAO();
-	            List<PaymentBean> paymentList = dao.reimbursementAll();
+	            //PaymentDAO dao = new PaymentDAO();
+	            //List<PaymentBean> paymentList = dao.reimbursementAll();
 
 	            // Excel作成
 	            XSSFWorkbook workbook = new XSSFWorkbook();
@@ -67,8 +66,8 @@ public class Export_reimbursementServlet extends HttpServlet {
 	            Cell cell2 = row2.createCell(2);
 
 	            cell0.setCellValue("Excelを出力してみた");
-	            cell1.setCellV(100 / 3.14);
-	            cell2.setCellV(12345.9876);
+	            cell1.setCellValue(100 / 3.14);
+	            cell2.setCellValue(12345.9876);
 
 	            // ブラウザに直接ダウンロードさせる
 	            resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -82,3 +81,11 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        }
 	    }
 	}
+	
+	
+	
+	
+	
+	
+
+	
