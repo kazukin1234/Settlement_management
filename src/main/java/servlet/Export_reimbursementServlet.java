@@ -52,29 +52,29 @@ public class Export_reimbursementServlet extends HttpServlet {
 	
 	 @Override
 	    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	        try {
-	        		    //エクセルファイルへアクセスするためのオブジェクト
-	        		    Workbook excel = WorkbookFactory.create(new File("\"C:\\Users\\kkumagai\\git\\Settlement_management_new\\src\\main\\webapp\\WEB-INF\\lib\\Sample.xlsx\""));
+		 try {
+			    // Tomcat上での絶対パスを取得
+			    String path = getServletContext().getRealPath("/WEB-INF/resources/Sample.xlsx");
 
-	        		    // シート名がわかっている場合
-	        		    Sheet sheet = excel.getSheet("Sheet1");
+			    // Excelファイルを開く
+			    Workbook excel = WorkbookFactory.create(new File(path));
 
-	        		    //0行目
-	        		    Row row = sheet.getRow(0);
+			    // シート取得
+			    Sheet sheet = excel.getSheet("Sheet1");
 
-	        		    //0番目のセル
-	        		    Cell cell = row.getCell(0);
+			    // 0行目、0列目
+			    Row row = sheet.getRow(0);
+			    Cell cell = row.getCell(0);
 
-	        		    //文字列の取得
-	        		    String value = cell.getStringCellValue();
+			    // 値を取得
+			    String value = cell.getStringCellValue();
+			    System.out.println(value);
 
-	        		    //取得した文字列の表示
-	        		    System.out.println(value);
-	        		  
+			    excel.close();
+			} catch (Exception e) {
+			    throw new ServletException(e);
+			}
 
-	        } catch (Exception e) {
-	            throw new ServletException(e);
-	        }
 	    }
 	 
 	 
