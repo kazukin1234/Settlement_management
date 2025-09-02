@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -58,29 +60,35 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        XSSFWorkbook workbook = new XSSFWorkbook();
 	        Sheet sheet = workbook.createSheet("立替金一覧");
 
-	        // ヘッダー行
-	        Row header = sheet.createRow(0);
-	        String[] columns = {"申請ID", "社員ID", "社員名", "申請種別", "申請時間", "金額（税込）", "ステータス"};
-	        for (int i = 0; i < columns.length; i++) {
-	        	header.createCell(i).setCellValue(columns[i]);
+	    
+
+	        
+	        int rowNum = 0;
+	        for (PaymentBean p : paymentList) {
+	            Row row1 = sheet.createRow(rowNum++);
+	            row1.createCell(0).setCellValue("立替金申請: ");
+	            row1.createCell(1).setCellValue(p.getApplicationId());
+
+	            Row row2 = sheet.createRow(rowNum++);
+	            row2.createCell(0).setCellValue("年月: " + p.getCreatedAt());
+
+	            Row row3 = sheet.createRow(rowNum++);
+	            row3.createCell(0).setCellValue("名前: " + p.getStaffName());
+
+	            rowNum++; // 空行を入れる場合
 	        }
 
-	        // データ行
-	        int rowNum = 1;
-	        for (PaymentBean p : paymentList) {
-	            Row row = sheet.createRow(rowNum++);
-	            row.createCell(0).setCellValue(p.getApplicationId());
-	            row.createCell(1).setCellValue(p.getStaffId());
-	            row.createCell(2).setCellValue(p.getStaffName());
-	            row.createCell(3).setCellValue(p.getApplicationType());
-	            row.createCell(4).setCellValue(p.getCreatedAt().toString());
-	            row.createCell(5).setCellValue(p.getAmount());
-	            row.createCell(6).setCellValue(p.getStatus());
-	        }
 
 	        // ブラウザにダウンロード
 	        resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-	        resp.setHeader("Content-Disposition", "attachment; filename=\"reimbursement.xlsx\"");
+	        
+	        PaymentBean p = paymentList.get(0); // 例として最初の申請の情報を使う場合
+	        LocalDateTime createdAt = p.getCreatedAt().toLocalDateTime(); // Timestampなら変換が必要
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm");
+	        String fileName = "立替金申請_" + createdAt.format(formatter) + "_" + p.getStaffName() + ".xlsx";
+
+	        resp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+	        
 	        workbook.write(resp.getOutputStream());
 	        workbook.close();
 
