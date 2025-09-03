@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -71,6 +72,11 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        dateStyle.setDataFormat(
 	            createHelper.createDataFormat().getFormat("yyyy/MM/dd HH:mm")
 	        );
+	        dateStyle.setAlignment(HorizontalAlignment.RIGHT);
+	        
+	        //右寄せの表示
+	        CellStyle rightAlignStyle=workbook.createCellStyle();
+	        rightAlignStyle.setAlignment(HorizontalAlignment.RIGHT);
 	    
 
 	        
@@ -81,20 +87,38 @@ public class Export_reimbursementServlet extends HttpServlet {
 	            row1.createCell(1).setCellValue(p.getApplicationId());
 
 	            Row row2 = sheet.createRow(rowNum++);
-	            row2.createCell(0).setCellValue("申請時間");
-	            Cell dateCell = row2.createCell(1);
+	            row2.createCell(0).setCellValue("社員ID");
+	            Cell staffIdCell = row2.createCell(1);
+	            staffIdCell.setCellValue(p.getStaffId());
+	            staffIdCell.setCellStyle(rightAlignStyle);
+	            
+	            
+	            Row row3 = sheet.createRow(rowNum++);
+	            row3.createCell(0).setCellValue("申請時間");
+	            Cell dateCell = row3.createCell(1);
 	            dateCell.setCellValue(p.getCreatedAt().toLocalDateTime());
 	            dateCell.setCellStyle(dateStyle);
 	            
-	            Row row3 = sheet.createRow(rowNum++);
-	            row3.createCell(0).setCellValue("名前");
-	            row3.createCell(1).setCellValue(p.getStaffName());
-
+	            
 	            Row row4 = sheet.createRow(rowNum++);
-	            row4.createCell(0).setCellValue("金額");
-	            row4.createCell(1).setCellValue(p.getAmount());
+	            row4.createCell(0).setCellValue("名前");
+	            Cell nameCell = row4.createCell(1);
+	            nameCell.setCellValue(p.getStaffName());
+	            nameCell.setCellStyle(rightAlignStyle);
+	     
 	            
 	            
+	            
+	           
+	            
+	            
+	            
+	            
+	            Row row5 = sheet.createRow(rowNum++);
+	            row5.createCell(0).setCellValue("金額");
+	            Cell amountCell = row5.createCell(1);
+	            amountCell.setCellValue(p.getAmount()+"円");
+	            amountCell.setCellStyle(rightAlignStyle);
 	            
 	            
 	            
@@ -113,7 +137,7 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        String rawFileName = "立替金申請_" + createdAt.format(formatter1) + "_" + p.getStaffName() + ".xlsx";
 
 	        // URLエンコードしてヘッダにセット
-	        String encodedFileName = URLEncoder.encode(rawFileName, StandardCharsets.UTF_8.toString());
+	        String encodedFileName = URLEncoder.encode(rawFileName, StandardCharsets.UTF_8.toString()).replace("+","%20");
 	        resp.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFileName);
 
 	        workbook.write(resp.getOutputStream());
