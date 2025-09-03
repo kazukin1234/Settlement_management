@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -60,24 +63,42 @@ public class Export_reimbursementServlet extends HttpServlet {
 
 	        // Excel作成
 	        XSSFWorkbook workbook = new XSSFWorkbook();
-	        Sheet sheet = workbook.createSheet("立替金一覧");
+	        Sheet sheet = workbook.createSheet("立替金申請");
 
+	        // 日付フォーマット
+	        CreationHelper createHelper = workbook.getCreationHelper();
+	        CellStyle dateStyle = workbook.createCellStyle();
+	        dateStyle.setDataFormat(
+	            createHelper.createDataFormat().getFormat("yyyy/MM/dd HH:mm")
+	        );
 	    
 
 	        
 	        int rowNum = 0;
 	        for (PaymentBean p : paymentList) {
 	            Row row1 = sheet.createRow(rowNum++);
-	            row1.createCell(0).setCellValue("立替金申請: ");
+	            row1.createCell(0).setCellValue("申請ID");
 	            row1.createCell(1).setCellValue(p.getApplicationId());
 
 	            Row row2 = sheet.createRow(rowNum++);
-	            row2.createCell(0).setCellValue("年月: " + p.getCreatedAt());
-
+	            row2.createCell(0).setCellValue("申請時間");
+	            Cell dateCell = row2.createCell(1);
+	            dateCell.setCellValue(p.getCreatedAt().toLocalDateTime());
+	            dateCell.setCellStyle(dateStyle);
+	            
 	            Row row3 = sheet.createRow(rowNum++);
-	            row3.createCell(0).setCellValue("名前: " + p.getStaffName());
+	            row3.createCell(0).setCellValue("名前");
+	            row3.createCell(1).setCellValue(p.getStaffName());
 
-	            rowNum++; // 空行を入れる場合
+	            Row row4 = sheet.createRow(rowNum++);
+	            row4.createCell(0).setCellValue("金額");
+	            row4.createCell(1).setCellValue(p.getAmount());
+	            
+	            
+	            
+	            
+	            
+	            rowNum++; // 空行を入れる
 	        }
 
 
@@ -88,7 +109,7 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        // ファイル名を作成
 	        PaymentBean p = paymentList.get(0);
 	        LocalDateTime createdAt = p.getCreatedAt().toLocalDateTime();
-	        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm");
+	        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyyMMdd");
 	        String rawFileName = "立替金申請_" + createdAt.format(formatter1) + "_" + p.getStaffName() + ".xlsx";
 
 	        // URLエンコードしてヘッダにセット
@@ -97,6 +118,8 @@ public class Export_reimbursementServlet extends HttpServlet {
 
 	        workbook.write(resp.getOutputStream());
 	        workbook.close();
+	        
+	        
 
 	    } catch (Exception e) {
 	        throw new ServletException(e);
