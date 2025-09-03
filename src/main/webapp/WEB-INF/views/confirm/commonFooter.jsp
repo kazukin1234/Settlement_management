@@ -65,7 +65,8 @@
     
     <c:if test="${showExportButton}">
     <form action="${pageContext.request.contextPath}/Export_reimbursement" method="post" style="display:inline;">
-        <input type="hidden" name="appIds" value="${applicationId}">
+        <input type="hidden" name="applicationId" value="${applicationId}"/>
+         <input type="hidden" name="staffName" value="${p.staffName}" />
         <button type="submit" class="approve-btn" onclick="return confirm('excelファイルでエクスポートします。よろしいですか？')">エクスポート(.xlsx)</button>
     </form>
 </c:if>
