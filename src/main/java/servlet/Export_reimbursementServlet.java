@@ -56,14 +56,15 @@ public class Export_reimbursementServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    try {
-	        // パラメータから applicationId を取得
-	        int appId = Integer.parseInt(req.getParameter("applicationId"));
-	        int staffId = Integer.parseInt(req.getParameter("staffName"));
+	        // パラメータから 名前 を取得
+	        
+	        String staffName = req.getParameter("staffName");
 	        
 
 	        // DAO から 1件分の Bean を取得
 	        PaymentDAO dao = new PaymentDAO();
-	        List<ReimbursementDetailBean> reimbursementApp = dao.fetchDetails();
+	        int applicationId = Integer.parseInt(req.getParameter("applicationId"));
+	        List<ReimbursementDetailBean> details = dao.fetchDetails(applicationId);
 
 	        // Excel作成
 	        XSSFWorkbook workbook = new XSSFWorkbook();
@@ -78,7 +79,7 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        int blockCount = 1;
 
 	        // 明細を1ブロックずつ出力
-	        for (ReimbursementDetailBean d : reimbursementApp) {
+	        for (ReimbursementDetailBean d : details) {
 	            Row titleRow = sheet.createRow(rowNum++);
 	            titleRow.createCell(0).setCellValue("精算明細 " + (blockCount++));
 
@@ -129,11 +130,16 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        }
 
 	        // 総合計
+	        int totalAmount = details.stream()
+                    .mapToInt(ReimbursementDetailBean::getAmount)
+                    .sum();
+
 	        Row totalRow = sheet.createRow(rowNum++);
-	        totalRow.createCell(0).setCellValue("総合計金額");
-	        Cell totalCell = totalRow.createCell(1);
-	        totalCell.setCellValue(reimbursementApp.getAmount());
-	        totalCell.setCellStyle(rightAlign);
+totalRow.createCell(0).setCellValue("総合計金額");
+Cell totalCell = totalRow.createCell(1);
+totalCell.setCellValue(totalAmount);
+totalCell.setCellStyle(rightAlign);
+
 
 	        // 列幅調整
 	        sheet.autoSizeColumn(0);
@@ -141,7 +147,7 @@ public class Export_reimbursementServlet extends HttpServlet {
 
 	        // レスポンス出力
 	        resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-	        String fileName = "立替金申請_" + staffId + ".xlsx";
+	        String fileName = "立替金申請_" + staffName + ".xlsx";
 	        String encoded = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replace("+", "%20");
 	        resp.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encoded);
 

@@ -115,15 +115,17 @@ public class PaymentDAO {
 	
 	
 	
-	public List<ReimbursementDetailBean> fetchDetails() throws SQLException {
+	public List<ReimbursementDetailBean> fetchDetails(int applicationId) throws SQLException {
 	    List<ReimbursementDetailBean> details = new ArrayList<>();
 
 	    String sql = "SELECT project_code, date, destinations, accounting_item, amount, abstract_note, report " +
 	                       "FROM reimbursement_request WHERE application_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql)){
+        	ps.setInt(1, applicationId);  // ← ここで ? に値をセット
+        
+            try( ResultSet rs = ps.executeQuery()) {
         	
 	            while (rs.next()) {
 	                ReimbursementDetailBean d = new ReimbursementDetailBean();
@@ -136,7 +138,7 @@ public class PaymentDAO {
 	                d.setReport(rs.getString("report"));
 
 	                details.add(d);
-	            }
+	            }}
         }
 	    	catch (Exception e) {
 	            e.printStackTrace();
