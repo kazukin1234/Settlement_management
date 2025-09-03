@@ -3,10 +3,12 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import bean.PaymentBean;
+import bean.ReimbursementDetailBean;
 import util.DBConnection;
 
 /**
@@ -110,4 +112,49 @@ public class PaymentDAO {
 
         return list;
 	}
+	
+	
+	
+	public List<ReimbursementDetailBean> fetchDetails() throws SQLException {
+	    List<ReimbursementDetailBean> details = new ArrayList<>();
+
+	    String sql = "SELECT project_code, date, destinations, accounting_item, amount, abstract_note, report " +
+	                       "FROM reimbursement_request WHERE application_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+        	
+	            while (rs.next()) {
+	                ReimbursementDetailBean d = new ReimbursementDetailBean();
+	                d.setProjectCode(rs.getString("project_code"));
+	                d.setDate(rs.getDate("date").toString());
+	                d.setDestinations(rs.getString("destinations"));
+	                d.setAccountingItem(rs.getString("accounting_item"));
+	                d.setAmount(rs.getInt("amount"));
+	                d.setAbstractNote(rs.getString("abstract_note"));
+	                d.setReport(rs.getString("report"));
+
+	                details.add(d);
+	            }
+        }
+	    	catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    return details;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
