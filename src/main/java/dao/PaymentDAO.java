@@ -80,7 +80,7 @@ public class PaymentDAO {
 
 	public List<PaymentBean> reimbursementAll() {
 		// TODO 自動生成されたメソッド・スタブ
-		
+		//ekuselに書きこむデータ、立替金
 	    ArrayList<PaymentBean> list = new ArrayList<>();
 
         String sql = "SELECT a.application_id, "+
@@ -138,7 +138,9 @@ public class PaymentDAO {
 	                d.setReport(rs.getString("report"));
 
 	                details.add(d);
-	            }}
+	            }
+	            
+            }
         }
 	    	catch (Exception e) {
 	            e.printStackTrace();
@@ -147,7 +149,38 @@ public class PaymentDAO {
 	}
 	
 	
-	
+	public PaymentBean findById(int applicationId) {
+	    PaymentBean bean = null;
+	    String sql = "SELECT a.application_id, a.staff_id, s.name AS staff_name, " +
+	                 "a.application_type, a.created_at, a.updated_at, a.amount, a.status " +
+	                 "FROM application_header a " +
+	                 "LEFT JOIN staff s ON a.staff_id = s.staff_id " +
+	                 "WHERE a.application_id = ?";
+
+	    try (Connection conn = DBConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setInt(1, applicationId);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                bean = new PaymentBean();
+	                bean.setApplicationId(rs.getInt("application_id"));
+	                bean.setStaffId(rs.getString("staff_id"));
+	                bean.setStaffName(rs.getString("staff_name"));
+	                bean.setApplicationType(rs.getString("application_type"));
+	                bean.setCreatedAt(rs.getTimestamp("created_at"));
+	                bean.setUpdatedAt(rs.getTimestamp("updated_at"));
+	                bean.setAmount(rs.getInt("amount"));
+	                bean.setStatus(rs.getString("status"));
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return bean;
+	}
+
 	
 	
 	

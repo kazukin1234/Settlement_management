@@ -56,26 +56,58 @@ public class Export_reimbursementServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	    try {
-	        // パラメータから 名前 を取得
+	       
+	    	String[] appIds = req.getParameterValues("appIds");
 	        
-	        String staffName = req.getParameter("staffName");
-	        
-
+	    	
 	        // DAO から 1件分の Bean を取得
 	        PaymentDAO dao = new PaymentDAO();
+	        
+	        
 	        int applicationId = Integer.parseInt(req.getParameter("applicationId"));
 	        List<ReimbursementDetailBean> details = dao.fetchDetails(applicationId);
 
+	     // 該当申請の PaymentBean を取得
+	        PaymentBean targetBean = dao.findById(applicationId);
+
+	        // staffName を取り出す
+	        String staffName = (targetBean != null && targetBean.getStaffName() != null) 
+	                             ? targetBean.getStaffName() 
+	                             : "不明社員";
+	        
+	        
 	        // Excel作成
 	        XSSFWorkbook workbook = new XSSFWorkbook();
 	        Sheet sheet = workbook.createSheet("立替金申請");
 
 	        // 書式準備
-	        CellStyle rightAlign = workbook.createCellStyle();
-	        rightAlign.setAlignment(HorizontalAlignment.RIGHT);
+	        CellStyle leftAlign = workbook.createCellStyle();
+	        leftAlign.setAlignment(HorizontalAlignment.LEFT);
 
+	        // DAOから立替金一覧を取得
+	        PaymentDAO dao2 = new PaymentDAO();
+	        List<PaymentBean> paymentList = dao2.reimbursementAll();
+	        
 	        // 行番号管理
-	        int rowNum = 0;
+	        int rowcount = 0;
+	        
+	        for(PaymentBean bean : paymentList) {
+	        	
+	        	Row idrow=sheet.createRow(rowcount++);
+	        	idrow.createCell(0).setCellValue("社員ID");
+	        	idrow.createCell(1).setCellValue(bean.getStaffId());
+	        	
+	        	Row namerow=sheet.createRow(rowcount++);
+	        	namerow.createCell(0).setCellValue("申請者名");
+	        	namerow.createCell(1).setCellValue(bean.getStaffName());
+	        	
+	     
+	        			
+	        }
+	        
+	        
+	        // 行番号管理
+	        int rowNum = 2;
 	        int blockCount = 1;
 
 	        // 明細を1ブロックずつ出力
@@ -102,8 +134,8 @@ public class Export_reimbursementServlet extends HttpServlet {
 	            Row r5 = sheet.createRow(rowNum++);
 	            r5.createCell(0).setCellValue("金額");
 	            Cell amountCell = r5.createCell(1);
-	            amountCell.setCellValue(d.getAmount());
-	            amountCell.setCellStyle(rightAlign);
+	            amountCell.setCellValue(d.getAmount()+"円");
+	            amountCell.setCellStyle(leftAlign);
 
 	            if (d.getAbstractNote() != null && !d.getAbstractNote().isEmpty()) {
 	                Row r6 = sheet.createRow(rowNum++);
@@ -111,19 +143,19 @@ public class Export_reimbursementServlet extends HttpServlet {
 	                r6.createCell(1).setCellValue(d.getAbstractNote());
 	            }
 
-	            if (d.getReport() != null && !d.getReport().isEmpty()) {
-	                Row r7 = sheet.createRow(rowNum++);
-	                r7.createCell(0).setCellValue("報告書");
-	                r7.createCell(1).setCellValue(d.getReport());
-	            }
+	            //if (d.getReport() != null && !d.getReport().isEmpty()) {
+	             //   Row r7 = sheet.createRow(rowNum++);
+	              //  r7.createCell(0).setCellValue("報告書");
+	              //  r7.createCell(1).setCellValue(d.getReport());
+	            //}
 
 	            if (d.getTemporaryFiles() != null && !d.getTemporaryFiles().isEmpty()) {
-	                Row r8 = sheet.createRow(rowNum++);
-	                r8.createCell(0).setCellValue("領収書ファイル");
+	                Row r7 = sheet.createRow(rowNum++);
+	                r7.createCell(0).setCellValue("領収書ファイル");
 	                String fileNames = d.getTemporaryFiles().stream()
 	                        .map(f -> f.getOriginalFileName())
 	                        .collect(Collectors.joining(", "));
-	                r8.createCell(1).setCellValue(fileNames);
+	                r7.createCell(1).setCellValue(fileNames);
 	            }
 
 	            rowNum++;
@@ -135,19 +167,21 @@ public class Export_reimbursementServlet extends HttpServlet {
                     .sum();
 
 	        Row totalRow = sheet.createRow(rowNum++);
-totalRow.createCell(0).setCellValue("総合計金額");
-Cell totalCell = totalRow.createCell(1);
-totalCell.setCellValue(totalAmount);
-totalCell.setCellStyle(rightAlign);
+	        totalRow.createCell(0).setCellValue("総合計金額");
+			Cell totalCell = totalRow.createCell(1);
+			totalCell.setCellValue(totalAmount+"円");
+			totalCell.setCellStyle(leftAlign);
 
 
 	        // 列幅調整
 	        sheet.autoSizeColumn(0);
 	        sheet.autoSizeColumn(1);
 
+	        
+	        
 	        // レスポンス出力
 	        resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-	        String fileName = "立替金申請_" + staffName + ".xlsx";
+	        String fileName = "立替金申請_申請ID:" +applicationId +"_"+staffName + ".xlsx";
 	        String encoded = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replace("+", "%20");
 	        resp.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encoded);
 
