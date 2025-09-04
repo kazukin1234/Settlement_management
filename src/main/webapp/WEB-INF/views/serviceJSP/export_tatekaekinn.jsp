@@ -62,7 +62,7 @@
 						<tbody>
 							<c:forEach var="p" items="${paymentList}">
 								<tr class="clickable-row" data-id="${p.applicationId}" data-status="${p.status}" data-staff-id="${p.staffId}">
-									<td><input type="checkbox" class="row-check" name="appIds"
+									<td><input type="checkbox" class="row-check" name="applicationId"
 										value="${p.applicationId}"></td>
 									<td>${p.applicationId}</td>
 									<td>${p.staffId}</td>
@@ -82,6 +82,7 @@
 <!--				<div class="btn-section">-->
 <!--					<button type="button" onclick="history.back()">戻る</button>-->
 <!--				</div>-->
+
 			</form>
 		</div>
 	</div>
