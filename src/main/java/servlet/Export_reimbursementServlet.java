@@ -88,91 +88,74 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        PaymentDAO dao2 = new PaymentDAO();
 	        List<PaymentBean> paymentList = dao2.reimbursementAll();
 	        
-	        // 行番号管理
-	        int rowcount = 0;
-	        
-	        for(PaymentBean bean : paymentList) {
-	        	
-	        	Row idrow=sheet.createRow(rowcount++);
-	        	idrow.createCell(0).setCellValue("社員ID");
-	        	idrow.createCell(1).setCellValue(bean.getStaffId());
-	        	
-	        	Row namerow=sheet.createRow(rowcount++);
-	        	namerow.createCell(0).setCellValue("申請者名");
-	        	namerow.createCell(1).setCellValue(bean.getStaffName());
-	        	
-	     
-	        			
-	        }
 	        
 	        
-	        // 行番号管理
-	        int rowNum = 2;
-	        int blockCount = 1;
+	        
+	        
+	     // ヘッダー行作成
+	        Row headerRow = sheet.createRow(0);
+	        headerRow.createCell(0).setCellValue("社員ID");
+	        headerRow.createCell(1).setCellValue("申請者名");
+	        headerRow.createCell(2).setCellValue("PJコード");
+	        headerRow.createCell(3).setCellValue("日付");
+	        headerRow.createCell(4).setCellValue("訪問先");
+	        headerRow.createCell(5).setCellValue("勘定科目");
+	        headerRow.createCell(6).setCellValue("金額");
+	        headerRow.createCell(7).setCellValue("摘要");
+	        headerRow.createCell(8).setCellValue("領収書ファイル");
 
-	        // 明細を1ブロックずつ出力
+	        // データ行開始位置
+	        int rowNum = 1;
+	        int totalAmount = 0;  // 合計金額計算用
+
+
+	        // 申請ごとにループ
 	        for (ReimbursementDetailBean d : details) {
-	            Row titleRow = sheet.createRow(rowNum++);
-	            titleRow.createCell(0).setCellValue("精算明細 " + (blockCount++));
+	            Row dataRow = sheet.createRow(rowNum++);
 
-	            Row r1 = sheet.createRow(rowNum++);
-	            r1.createCell(0).setCellValue("PJコード");
-	            r1.createCell(1).setCellValue(d.getProjectCode());
+	            // 左端に社員情報を固定的に出力
+	            dataRow.createCell(0).setCellValue(targetBean.getStaffId());
+	            dataRow.createCell(1).setCellValue(targetBean.getStaffName());
 
-	            Row r2 = sheet.createRow(rowNum++);
-	            r2.createCell(0).setCellValue("日付");
-	            r2.createCell(1).setCellValue(d.getDate());
+	            // 明細を横に展開
+	            dataRow.createCell(2).setCellValue(d.getProjectCode());
+	            dataRow.createCell(3).setCellValue(d.getDate());
+	            dataRow.createCell(4).setCellValue(d.getDestinations());
+	            dataRow.createCell(5).setCellValue(d.getAccountingItem());
 
-	            Row r3 = sheet.createRow(rowNum++);
-	            r3.createCell(0).setCellValue("訪問先");
-	            r3.createCell(1).setCellValue(d.getDestinations());
-
-	            Row r4 = sheet.createRow(rowNum++);
-	            r4.createCell(0).setCellValue("勘定科目");
-	            r4.createCell(1).setCellValue(d.getAccountingItem());
-
-	            Row r5 = sheet.createRow(rowNum++);
-	            r5.createCell(0).setCellValue("金額");
-	            Cell amountCell = r5.createCell(1);
-	            amountCell.setCellValue(d.getAmount()+"円");
+	            Cell amountCell = dataRow.createCell(6);
+	            amountCell.setCellValue(d.getAmount());
 	            amountCell.setCellStyle(leftAlign);
 
 	            if (d.getAbstractNote() != null && !d.getAbstractNote().isEmpty()) {
-	                Row r6 = sheet.createRow(rowNum++);
-	                r6.createCell(0).setCellValue("摘要");
-	                r6.createCell(1).setCellValue(d.getAbstractNote());
+	                dataRow.createCell(7).setCellValue(d.getAbstractNote());
 	            }
 
-	            //if (d.getReport() != null && !d.getReport().isEmpty()) {
-	             //   Row r7 = sheet.createRow(rowNum++);
-	              //  r7.createCell(0).setCellValue("報告書");
-	              //  r7.createCell(1).setCellValue(d.getReport());
-	            //}
-
 	            if (d.getTemporaryFiles() != null && !d.getTemporaryFiles().isEmpty()) {
-	                Row r7 = sheet.createRow(rowNum++);
-	                r7.createCell(0).setCellValue("領収書ファイル");
 	                String fileNames = d.getTemporaryFiles().stream()
 	                        .map(f -> f.getOriginalFileName())
 	                        .collect(Collectors.joining(", "));
-	                r7.createCell(1).setCellValue(fileNames);
+	                dataRow.createCell(8).setCellValue(fileNames);
 	            }
+	        }
+	        
+	        
+	     // 総合計行を追加
+	        Row totalRow = sheet.createRow(rowNum++);
+	        totalRow.createCell(0).setCellValue("合計");
+	        totalRow.createCell(1).setCellValue(targetBean.getStaffName());
 
-	            rowNum++;
+	        Cell totalAmountCell = totalRow.createCell(6);
+	        totalAmountCell.setCellValue(totalAmount);
+	        totalAmountCell.setCellStyle(leftAlign);
+
+	        // 列幅自動調整
+	        for (int i = 0; i <= 8; i++) {
+	            sheet.autoSizeColumn(i);
 	        }
 
-	        // 総合計
-	        int totalAmount = details.stream()
-                    .mapToInt(ReimbursementDetailBean::getAmount)
-                    .sum();
-
-	        Row totalRow = sheet.createRow(rowNum++);
-	        totalRow.createCell(0).setCellValue("総合計金額");
-			Cell totalCell = totalRow.createCell(1);
-			totalCell.setCellValue(totalAmount+"円");
-			totalCell.setCellStyle(leftAlign);
-
-
+	        
+	        
 	        // 列幅調整
 	        sheet.autoSizeColumn(0);
 	        sheet.autoSizeColumn(1);
