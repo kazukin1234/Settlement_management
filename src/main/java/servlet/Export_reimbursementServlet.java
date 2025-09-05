@@ -5,6 +5,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -53,164 +55,135 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        throw new ServletException(e);
 	    }
 	}
+	
+	
+	
+	
+	
+@Override
+protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    try {
+        PaymentDAO dao = new PaymentDAO();
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    try {
-	       
-	    	String[] appIds = req.getParameterValues("appIds");
-	        
-	    	
-	        // DAO から 1件分の Bean を取得
-	        PaymentDAO dao = new PaymentDAO();
-	        
-	        
-	        int applicationId = Integer.parseInt(req.getParameter("applicationId"));
-	        List<ReimbursementDetailBean> details = dao.fetchDetails(applicationId);
+        // 複数選択された場合
+        String[] appIds = req.getParameterValues("applicationId");
+        if (appIds != null && appIds.length > 1) {
+            // ZIP出力
+            resp.setContentType("application/zip");
+            String zipFileName = "立替金申請まとめ.zip";
+            String encoded = URLEncoder.encode(zipFileName, StandardCharsets.UTF_8).replace("+", "%20");
+            resp.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encoded);
 
-	     // 該当申請の PaymentBean を取得
-	        PaymentBean targetBean = dao.findById(applicationId);
+            try (ZipOutputStream zos = new ZipOutputStream(resp.getOutputStream())) {
+                for (String appIdStr : appIds) {
+                    int appId = Integer.parseInt(appIdStr);
+                    PaymentBean targetBean = dao.findById(appId);
+                    List<ReimbursementDetailBean> details = dao.fetchDetails(appId);
 
-	        // staffName を取り出す
-	        String staffName = (targetBean != null && targetBean.getStaffName() != null) 
-	                             ? targetBean.getStaffName() 
-	                             : "不明社員";
-	        
-	        
-	        // Excel作成
-	        XSSFWorkbook workbook = new XSSFWorkbook();
-	        Sheet sheet = workbook.createSheet("立替金申請");
+                    // Excel作成（共通ロジックに切り出すと便利）
+                    XSSFWorkbook workbook = createExcel(targetBean, details);
 
-	        // 書式準備
-	        CellStyle leftAlign = workbook.createCellStyle();
-	        leftAlign.setAlignment(HorizontalAlignment.LEFT);
+                    // ZIPエントリ追加
+                    String excelFileName = "立替金申請_" + appId + "_" + targetBean.getStaffName() + ".xlsx";
+                    zos.putNextEntry(new ZipEntry(excelFileName));
+                    workbook.write(zos);
+                    zos.closeEntry();
+                    workbook.close();
+                }
+            }
+            return; // ZIP出力完了 → 処理終了
+        }
 
-	        // DAOから立替金一覧を取得
-	        PaymentDAO dao2 = new PaymentDAO();
-	        List<PaymentBean> paymentList = dao2.reimbursementAll();
-	        
-	        
-	        // 「円」付きの表示形式を定義
-	        CellStyle yenStyle = workbook.createCellStyle();
-	        DataFormat format = workbook.createDataFormat();
-	        yenStyle.setDataFormat(format.getFormat("#,##0\"円\""));
-	        yenStyle.setAlignment(HorizontalAlignment.LEFT);
-	        
-	        
-	        
-	        
-	        
-	        
-	        
-	        
-	        
-	     // ヘッダー行作成
-	        Row headerRow = sheet.createRow(0);
-	        headerRow.createCell(0).setCellValue("社員ID");
-	        headerRow.createCell(1).setCellValue("申請者名");
-	        headerRow.createCell(2).setCellValue("PJコード");
-	        headerRow.createCell(3).setCellValue("日付");
-	        headerRow.createCell(4).setCellValue("訪問先");
-	        headerRow.createCell(5).setCellValue("勘定科目");
-	        headerRow.createCell(6).setCellValue("金額");
-	        headerRow.createCell(7).setCellValue("摘要");
-	        headerRow.createCell(8).setCellValue("総合計金額");
-	       
-	        // データ行開始位置
-	        int rowNum = 1;
-	        
-	        
-	        // 申請ごとにループ
-	        for (ReimbursementDetailBean d : details) {
-	            Row dataRow = sheet.createRow(rowNum++);
+        // 1件のみの場合（既存処理）
+        int applicationId = Integer.parseInt(req.getParameter("applicationId"));
+        PaymentBean targetBean = dao.findById(applicationId);
+        List<ReimbursementDetailBean> details = dao.fetchDetails(applicationId);
 
-	            // 左端に社員情報を固定的に出力
-	            dataRow.createCell(0).setCellValue(targetBean.getStaffId());
-	            dataRow.createCell(1).setCellValue(targetBean.getStaffName());
+        XSSFWorkbook workbook = createExcel(targetBean, details);
 
-	            // 明細を横に展開
-	            dataRow.createCell(2).setCellValue(d.getProjectCode());
-	            dataRow.createCell(3).setCellValue(d.getDate());
-	            dataRow.createCell(4).setCellValue(d.getDestinations());
-	            dataRow.createCell(5).setCellValue(d.getAccountingItem());
+        resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        String fileName = "立替金申請_" + applicationId + "_" + targetBean.getStaffName() + ".xlsx";
+        String encoded = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replace("+", "%20");
+        resp.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encoded);
 
-	            Cell amountCell = dataRow.createCell(6);
-	            amountCell.setCellValue(d.getAmount());
-	            amountCell.setCellStyle(yenStyle);
+        workbook.write(resp.getOutputStream());
+        workbook.close();
 
-	            if (d.getAbstractNote() != null && !d.getAbstractNote().isEmpty()) {
-	                dataRow.createCell(7).setCellValue(d.getAbstractNote());
-	            }
+    } catch (Exception e) {
+        throw new ServletException(e);
+    }
+}
 
-	            if (d.getTemporaryFiles() != null && !d.getTemporaryFiles().isEmpty()) {
-	                String fileNames = d.getTemporaryFiles().stream()
-	                        .map(f -> f.getOriginalFileName())
-	                        .collect(Collectors.joining(", "));
-	                dataRow.createCell(8).setCellValue(fileNames);
-	            }
-	        }
-	        
-	        
-	        int totalAmount1 = details.stream()
-	        	    .mapToInt(ReimbursementDetailBean::getAmount)
-	        	    .sum();
-	        
-	    
-	        Row totalRow = sheet.createRow(rowNum++);
-			Cell totalAmountCell = totalRow.createCell(8);
-	        totalAmountCell.setCellValue(totalAmount1);
-	        totalAmountCell.setCellStyle(yenStyle);
+/**
+ * 共通Excel作成メソッド
+ */
+private XSSFWorkbook createExcel(PaymentBean targetBean, List<ReimbursementDetailBean> details) {
+    XSSFWorkbook workbook = new XSSFWorkbook();
+    Sheet sheet = workbook.createSheet("立替金申請");
 
-	        // 列幅自動調整
-	        for (int i = 0; i <= 9; i++) {
-	            sheet.autoSizeColumn(i);
-	        }
+    // 書式
+    CellStyle yenStyle = workbook.createCellStyle();
+    DataFormat format = workbook.createDataFormat();
+    yenStyle.setDataFormat(format.getFormat("#,##0\"円\""));
+    yenStyle.setAlignment(HorizontalAlignment.LEFT);
 
-	        
-	        
-	        // 列幅調整
-	        sheet.autoSizeColumn(0);
-	        sheet.autoSizeColumn(1);
+    // ヘッダー行
+    Row headerRow = sheet.createRow(0);
+    headerRow.createCell(0).setCellValue("社員ID");
+    headerRow.createCell(1).setCellValue("申請者名");
+    headerRow.createCell(2).setCellValue("PJコード");
+    headerRow.createCell(3).setCellValue("日付");
+    headerRow.createCell(4).setCellValue("訪問先");
+    headerRow.createCell(5).setCellValue("勘定科目");
+    headerRow.createCell(6).setCellValue("金額");
+    headerRow.createCell(7).setCellValue("摘要");
+    headerRow.createCell(8).setCellValue("総合計金額");
 
-	        
-	        
-	        // レスポンス出力
-	        resp.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-	        String fileName = "立替金申請_申請ID:" +applicationId +"_"+staffName + ".xlsx";
-	        String encoded = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replace("+", "%20");
-	        resp.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encoded);
+    int rowNum = 1;
+    for (ReimbursementDetailBean d : details) {
+        Row dataRow = sheet.createRow(rowNum++);
+        dataRow.createCell(0).setCellValue(targetBean.getStaffId());
+        dataRow.createCell(1).setCellValue(targetBean.getStaffName());
+        dataRow.createCell(2).setCellValue(d.getProjectCode());
+        dataRow.createCell(3).setCellValue(d.getDate());
+        dataRow.createCell(4).setCellValue(d.getDestinations());
+        dataRow.createCell(5).setCellValue(d.getAccountingItem());
 
-	        workbook.write(resp.getOutputStream());
-	        workbook.close();
+        Cell amountCell = dataRow.createCell(6);
+        amountCell.setCellValue(d.getAmount());
+        amountCell.setCellStyle(yenStyle);
 
-	    } catch (Exception e) {
-	        throw new ServletException(e);
-	    }
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	}
+        if (d.getAbstractNote() != null) {
+            dataRow.createCell(7).setCellValue(d.getAbstractNote());
+        }
+
+        if (d.getTemporaryFiles() != null && !d.getTemporaryFiles().isEmpty()) {
+            String fileNames = d.getTemporaryFiles().stream()
+                .map(f -> f.getOriginalFileName())
+                .collect(Collectors.joining(", "));
+            dataRow.createCell(8).setCellValue(fileNames);
+        }
+    }
+
+    // 合計行
+    int totalAmount = details.stream().mapToInt(ReimbursementDetailBean::getAmount).sum();
+    Row totalRow = sheet.createRow(rowNum);
+    Cell totalAmountCell = totalRow.createCell(8);
+    totalAmountCell.setCellValue(totalAmount);
+    totalAmountCell.setCellStyle(yenStyle);
+
+    // 自動調整
+    for (int i = 0; i <= 9; i++) {
+        sheet.autoSizeColumn(i);
+    }
+
+    return workbook;
+}
 
 	
+
+
+
 	
 	
 	
