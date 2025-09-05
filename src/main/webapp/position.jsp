@@ -46,8 +46,8 @@ table {
           <tr>
             <th class="th-action-toolbar" colspan="100" style="text-align: right;">
               <div class="action-toolbar">
-                <button type="button"
-                  onclick="location.href='positionControl?action=add'">＋ 新規追加</button>
+               <!--   <button type="button"
+                  onclick="location.href='positionControl?action=add'">＋ 新規追加</button> -->
                 <button type="submit" name="action" value="edit" id="editBtn" disabled>編集</button>
                 <button type="submit" name="action" value="delete" id="deleteBtn" disabled
                   onclick="return confirm('本当に削除しますか？')">削除</button>

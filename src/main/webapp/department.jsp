@@ -53,9 +53,9 @@ table {
 								style="text-align: right;">
 								<div class="action-toolbar">
 									<div class="spacer"></div>
-									<button type="button"
+									<!--  <button type="button"
 										onclick="location.href='department?action=add'">＋
-										新規追加</button>
+										新規追加</button>-->
 									<button type="submit" name="action" value="edit" id="editBtn"
 										disabled>編集</button>
 									<button type="submit" name="action" value="delete"
