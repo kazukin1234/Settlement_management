@@ -53,8 +53,8 @@
 							<th>社員ID</th>
 							<th>氏名</th>
 							<th>ふりがな</th>
-							<th>生年月日</th>
-							<th>住所</th>
+							<!--  <th>生年月日</th>
+							<th>住所</th>-->
 							<th>入社日</th>
 							<th>部署</th>
 							<th>役職</th>
@@ -68,8 +68,8 @@
 								<td>${emp.employeeId}</td>
 								<td>${emp.fullName}</td>
 								<td>${emp.furigana}</td>
-								<td>${emp.birthDate}</td>
-								<td>${emp.address}</td>
+								<!--  <td>${emp.birthDate}</td>
+								<td>${emp.address}</td>-->
 								<td>${emp.joinDate}</td>
 								<td>${emp.departmentName}</td>
 								<td>${emp.positionName}</td>

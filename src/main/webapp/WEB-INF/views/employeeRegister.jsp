@@ -59,14 +59,15 @@ h2 {
 					<label>ふりがな</label> <input type="text" name="furigana" required
 						maxlength="20" value="${furigana}">
 				</div>
-				<div class="form-group">
+				<!--  <div class="form-group">
 					<label>生年月日</label> <input type="date" name="birthDate" required
 						value="${birthDateStr}">
 				</div>
 				<div class="form-group">
 					<label>住所</label> <input type="text" name="address" maxlength="50"
 						value="${address}">
-				</div>
+				
+				</div>-->
 				<div class="form-group">
 					<label>入社日</label> <input type="date" name="joinDate" required
 						value="${joinDateStr}">
