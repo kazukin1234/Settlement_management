@@ -148,7 +148,7 @@ public class Export_reimbursementServlet extends HttpServlet {
 	     // 総合計行を追加
 	        Row totalRow = sheet.createRow(rowNum++);
 	        totalRow.createCell(0).setCellValue("総合計金額");
-	        totalRow.createCell(1).setCellValue(targetBean.getStaffName());
+	        //totalRow.createCell(1).setCellValue(targetBean.getStaffName());
 	        
 	    
 
