@@ -97,6 +97,13 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        yenStyle.setAlignment(HorizontalAlignment.LEFT);
 	        
 	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        
 	     // ヘッダー行作成
 	        Row headerRow = sheet.createRow(0);
 	        headerRow.createCell(0).setCellValue("社員ID");
@@ -107,6 +114,7 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        headerRow.createCell(5).setCellValue("勘定科目");
 	        headerRow.createCell(6).setCellValue("金額");
 	        headerRow.createCell(7).setCellValue("摘要");
+	        headerRow.createCell(8).setCellValue("総合計金額");
 	       
 	        // データ行開始位置
 	        int rowNum = 1;
@@ -141,23 +149,20 @@ public class Export_reimbursementServlet extends HttpServlet {
 	                dataRow.createCell(8).setCellValue(fileNames);
 	            }
 	        }
+	        
+	        
 	        int totalAmount1 = details.stream()
 	        	    .mapToInt(ReimbursementDetailBean::getAmount)
 	        	    .sum();
 	        
-	     // 総合計行を追加
-	        Row totalRow = sheet.createRow(rowNum++);
-	        totalRow.createCell(0).setCellValue("総合計金額");
-	        //totalRow.createCell(1).setCellValue(targetBean.getStaffName());
-	        
 	    
-
-	        Cell totalAmountCell = totalRow.createCell(6);
+	        Row totalRow = sheet.createRow(rowNum++);
+			Cell totalAmountCell = totalRow.createCell(8);
 	        totalAmountCell.setCellValue(totalAmount1);
 	        totalAmountCell.setCellStyle(yenStyle);
 
 	        // 列幅自動調整
-	        for (int i = 0; i <= 8; i++) {
+	        for (int i = 0; i <= 9; i++) {
 	            sheet.autoSizeColumn(i);
 	        }
 
@@ -181,6 +186,28 @@ public class Export_reimbursementServlet extends HttpServlet {
 	    } catch (Exception e) {
 	        throw new ServletException(e);
 	    }
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	}
 
 	
