@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -89,7 +90,11 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        List<PaymentBean> paymentList = dao2.reimbursementAll();
 	        
 	        
-	        
+	        // 「円」付きの表示形式を定義
+	        CellStyle yenStyle = workbook.createCellStyle();
+	        DataFormat format = workbook.createDataFormat();
+	        yenStyle.setDataFormat(format.getFormat("#,##0\"円\""));
+	        yenStyle.setAlignment(HorizontalAlignment.LEFT);
 	        
 	        
 	     // ヘッダー行作成
@@ -102,13 +107,11 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        headerRow.createCell(5).setCellValue("勘定科目");
 	        headerRow.createCell(6).setCellValue("金額");
 	        headerRow.createCell(7).setCellValue("摘要");
-	        headerRow.createCell(8).setCellValue("領収書ファイル");
-
+	       
 	        // データ行開始位置
 	        int rowNum = 1;
-	        int totalAmount = 0;  // 合計金額計算用
-
-
+	        
+	        
 	        // 申請ごとにループ
 	        for (ReimbursementDetailBean d : details) {
 	            Row dataRow = sheet.createRow(rowNum++);
@@ -125,7 +128,7 @@ public class Export_reimbursementServlet extends HttpServlet {
 
 	            Cell amountCell = dataRow.createCell(6);
 	            amountCell.setCellValue(d.getAmount());
-	            amountCell.setCellStyle(leftAlign);
+	            amountCell.setCellStyle(yenStyle);
 
 	            if (d.getAbstractNote() != null && !d.getAbstractNote().isEmpty()) {
 	                dataRow.createCell(7).setCellValue(d.getAbstractNote());
@@ -138,16 +141,20 @@ public class Export_reimbursementServlet extends HttpServlet {
 	                dataRow.createCell(8).setCellValue(fileNames);
 	            }
 	        }
-	        
+	        int totalAmount1 = details.stream()
+	        	    .mapToInt(ReimbursementDetailBean::getAmount)
+	        	    .sum();
 	        
 	     // 総合計行を追加
 	        Row totalRow = sheet.createRow(rowNum++);
-	        totalRow.createCell(0).setCellValue("合計");
+	        totalRow.createCell(0).setCellValue("総合計金額");
 	        totalRow.createCell(1).setCellValue(targetBean.getStaffName());
+	        
+	    
 
 	        Cell totalAmountCell = totalRow.createCell(6);
-	        totalAmountCell.setCellValue(totalAmount);
-	        totalAmountCell.setCellStyle(leftAlign);
+	        totalAmountCell.setCellValue(totalAmount1);
+	        totalAmountCell.setCellStyle(yenStyle);
 
 	        // 列幅自動調整
 	        for (int i = 0; i <= 8; i++) {
