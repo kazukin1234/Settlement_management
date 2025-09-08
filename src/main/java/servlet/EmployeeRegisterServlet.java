@@ -61,8 +61,8 @@ public class EmployeeRegisterServlet extends HttpServlet {
 				request.setAttribute("employeeId", emp.getEmployeeId());
 				request.setAttribute("fullName", emp.getFullName());
 				request.setAttribute("furigana", emp.getFurigana());
-				request.setAttribute("birthDateStr", emp.getBirthDate().toString());
-				request.setAttribute("address", emp.getAddress());
+				//request.setAttribute("birthDateStr", emp.getBirthDate().toString());
+				//request.setAttribute("address", emp.getAddress());
 				request.setAttribute("joinDateStr", emp.getJoinDate().toString());
 				request.setAttribute("departmentId", emp.getDepartmentId());
 				request.setAttribute("positionId", emp.getPositionId());
