@@ -73,8 +73,8 @@ th {
 			<tr><th>社員ID</th><td><%=emp.getEmployeeId()%></td></tr>
 			<tr><th>氏名</th><td><%=emp.getFullName()%></td></tr>
 			<tr><th>ふりがな</th><td><%=emp.getFurigana()%></td></tr>
-			<tr><th>生年月日</th><td><%=emp.getBirthDate()%></td></tr>
-			<tr><th>住所</th><td><%=emp.getAddress()%></td></tr>
+			<!--  <tr><th>生年月日</th><td><%=emp.getBirthDate()%></td></tr>
+			<tr><th>住所</th><td><%=emp.getAddress()%></td></tr>-->
 			<tr><th>入社日</th><td><%=emp.getJoinDate()%></td></tr>
 			<tr><th>部署ID</th><td><%=emp.getDepartmentId()%></td></tr>
 			<tr><th>役職ID</th><td><%=emp.getPositionId()%></td></tr>
@@ -88,8 +88,10 @@ th {
 				<input type="hidden" name="employeeId" value="<%=emp.getEmployeeId()%>">
 				<input type="hidden" name="fullName" value="<%=emp.getFullName()%>">
 				<input type="hidden" name="furigana" value="<%=emp.getFurigana()%>">
+				<!-- 
 				<input type="hidden" name="birthDate" value="<%=emp.getBirthDate()%>">
-				<input type="hidden" name="address" value="<%=emp.getAddress()%>">
+				<input type="hidden" name="address" value="<%=emp.getAddress()%>"> 
+				-->
 				<input type="hidden" name="joinDate" value="<%=emp.getJoinDate()%>">
 				<input type="hidden" name="password" value="<%=emp.getPassword()%>">
 				<input type="hidden" name="confirmPassword" value="<%=emp.getPassword()%>">
