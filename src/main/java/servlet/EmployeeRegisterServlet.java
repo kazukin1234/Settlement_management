@@ -97,8 +97,8 @@ public class EmployeeRegisterServlet extends HttpServlet {
 		String employeeId = request.getParameter("employeeId");
 		String fullName = request.getParameter("fullName");
 		String furigana = request.getParameter("furigana");
-		String birthDateStr = request.getParameter("birthDate");
-		String address = request.getParameter("address");
+		//String birthDateStr = request.getParameter("birthDate");
+		//String address = request.getParameter("address");
 		String joinDateStr = request.getParameter("joinDate");
 		String password = request.getParameter("password");
 		String confirmPassword = request.getParameter("confirmPassword");
@@ -139,8 +139,8 @@ public class EmployeeRegisterServlet extends HttpServlet {
 			emp.setEmployeeId(employeeId);
 			emp.setFullName(fullName);
 			emp.setFurigana(furigana);
-			emp.setBirthDate(Date.valueOf(birthDateStr));
-			emp.setAddress(address);
+			//emp.setBirthDate(Date.valueOf(birthDateStr));
+			//emp.setAddress(address);
 			emp.setJoinDate(Date.valueOf(joinDateStr));
 			emp.setPassword(password);
 			emp.setDepartmentId(departmentId);
@@ -193,8 +193,8 @@ public class EmployeeRegisterServlet extends HttpServlet {
 				request.setAttribute("employeeId", emp.getEmployeeId());
 				request.setAttribute("fullName", emp.getFullName());
 				request.setAttribute("furigana", emp.getFurigana());
-				request.setAttribute("birthDateStr", emp.getBirthDate().toString());
-				request.setAttribute("address", emp.getAddress());
+				//request.setAttribute("birthDateStr", emp.getBirthDate().toString());
+				//request.setAttribute("address", emp.getAddress());
 				request.setAttribute("joinDateStr", emp.getJoinDate().toString());
 				request.setAttribute("password", emp.getPassword());
 				request.setAttribute("confirmPassword", emp.getPassword());
