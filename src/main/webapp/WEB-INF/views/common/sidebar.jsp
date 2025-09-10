@@ -20,7 +20,7 @@ String department = (String) session.getAttribute("department_id");
 			<%
 			if ("P0002".equals(position) && "D0002".equals(department)){
 %>
-<!-- 部長 / システム部署 D0003 -->
+<!-- 部長 / shiシステム部署 D0003 -->
 			<!-- 部長 / 管理部 -->
 			<li><a href="<%=request.getContextPath()%>/applicationMain"
 				class="btn">申請一覧</a></li>
