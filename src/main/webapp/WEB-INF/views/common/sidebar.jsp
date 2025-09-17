@@ -18,9 +18,8 @@ String department = (String) session.getAttribute("department_id");
         <h3>メニュー</h3>
 		<ul>
 			<%
-			if ("P0002".equals(position) && "D0002".equals(department)){
+			if ("P0001".equals(position) && "D0002".equals(department)){
 %>
-<!-- 部長 / shiシステム部署 D0003 -->
 			<!-- 部長 / 管理部 -->
 			<li><a href="<%=request.getContextPath()%>/applicationMain"
 				class="btn">申請一覧</a></li>
@@ -38,7 +37,7 @@ String department = (String) session.getAttribute("department_id");
 			<li><a href="<%=request.getContextPath()%>/changePass.jsp"
 				class="btn">パスワード変更</a></li>
 			<%
-			} else if ("P0004".equals(position) && "D0002".equals(department)) {
+			} else if ("P0003".equals(position) && "D0002".equals(department)) {
 			%>
 			<!-- 一般社員 / 管理部 -->
 			<li><a href="<%=request.getContextPath()%>/applicationMain"
@@ -55,10 +54,10 @@ String department = (String) session.getAttribute("department_id");
 			<li><a href="<%=request.getContextPath()%>/changePass.jsp"
 				class="btn">パスワード変更</a></li>
 			<%
-			} else if (("P0002".equals(position) && "D0001".equals(department))||
-                    ("P0002".equals(position) && "D0003".equals(department))  ){
+			} else if (("P0001".equals(position) && "D0001".equals(department))||
+                    ("P0001".equals(position) && "D0003".equals(department))  ){
 			%>
-			<!-- 部長/システムぶ  営業部 -->
+			<!-- 部長/システム事業部  営業部 -->
 			<li><a href="<%=request.getContextPath()%>/applicationMain"
 				class="btn">申請一覧</a></li>
 			<hr>
@@ -73,8 +72,8 @@ String department = (String) session.getAttribute("department_id");
 			<li><a href="<%=request.getContextPath()%>/changePass.jsp"
 				class="btn">パスワード変更</a></li>
 			<%
-			} else if (("P0003".equals(position) && "D0001".equals(department))||
-					("P0004".equals(position) && "D0003".equals(department)) ){
+			} else if (("P0002".equals(position) && "D0001".equals(department))||
+					("P0003".equals(position) && "D0003".equals(department)) ){
 			%>
 			<!-- 主任 / 営業部 と　一般社員/システム部-->
 			<li><a href="<%=request.getContextPath()%>/applicationMain"
@@ -82,7 +81,7 @@ String department = (String) session.getAttribute("department_id");
 			<hr>
 			<li><a
 				href="<%=request.getContextPath()%>/project_management_view">プロジェクト管理</a></li>
-				
+		    <li><a href="<%=request.getContextPath()%>/employeeList">社員管理</a></li>
 			<hr>
 			<li><a href="<%=request.getContextPath()%>/changePass.jsp"
 				class="btn">パスワード変更</a></li>
@@ -96,7 +95,7 @@ String department = (String) session.getAttribute("department_id");
 				
 				
 			<%
-			} else if ("P0004".equals(position) && "D0001".equals(department)) {
+			} else if ("P0003".equals(position) && "D0001".equals(department)) {
 			%>
 			<!-- 一般社員 / 営業部 -->
 			<li><a href="<%=request.getContextPath()%>/applicationMain"
