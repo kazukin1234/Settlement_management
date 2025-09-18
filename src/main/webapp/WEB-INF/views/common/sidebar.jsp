@@ -103,7 +103,7 @@ String department = (String) session.getAttribute("department_id");
 			<hr>
             <li><a
                 href="<%=request.getContextPath()%>/project_management_view">プロジェクト管理</a></li>
-            <li><a href="<%=request.getContextPath()%>/employeeList">社員管理</a></li>
+            <!--  <li><a href="<%=request.getContextPath()%>/employeeList">社員管理</a></li>-->
             <hr>
 			
 			<li><a href="<%=request.getContextPath()%>/changePass.jsp"
