@@ -184,7 +184,7 @@ public class ProjectControl extends HttpServlet {
 		        
 		        // ── ここで重複チェック ──
 		        if (dao.existsProjectCode(p.getProject_code())) {
-		            request.setAttribute("errorMsg", "このプロジェクトコードはすでに登録されています。");
+		            request.setAttribute("errorMsg", "このプロジェクトコードは過去に登録されています。");
 		            request.setAttribute("project_edit", p);
 		            request.setAttribute("screenMode", "insert");
 		            request.getRequestDispatcher("/WEB-INF/views/projectRegister.jsp").forward(request, response);
@@ -238,7 +238,7 @@ public class ProjectControl extends HttpServlet {
 
 		        // ── 更新時は自分自身を除外して重複チェック ──
 		        if (dao.existsProjectCodeExcept(p.getProject_code(), p.getProject_code())) {
-		            request.setAttribute("errorMsg", "このプロジェクトコードはすでに登録されています。");
+		            request.setAttribute("errorMsg", "このプロジェクトコードは過去に登録されています。");
 		            request.setAttribute("project_edit", p);
 		            request.setAttribute("screenMode", "edit");
 		            request.getRequestDispatcher("/WEB-INF/views/projectRegister.jsp").forward(request, response);
