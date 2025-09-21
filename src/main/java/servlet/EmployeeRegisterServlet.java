@@ -122,14 +122,14 @@ public class EmployeeRegisterServlet extends HttpServlet {
             if (editEmployeeId == null) {
                 // 新規登録時 → ID重複チェック
                 if (dao.existsById(employeeId)) {
-                    request.setAttribute("error", "この社員IDは既に存在します。");
+                    request.setAttribute("error", "この社員IDは過去に登録されています。");
                     request.getRequestDispatcher("/WEB-INF/views/employeeRegister.jsp").forward(request, response);
                     return;
                 }
             } else {
                 // 更新時 → 自分以外のIDと重複していないか確認
                 if (dao.existsByIdExceptSelf(employeeId, editEmployeeId)) {
-                    request.setAttribute("error", "この社員IDは既に存在します。");
+                    request.setAttribute("error", "この社員IDは過去に登録されています。");
                     request.getRequestDispatcher("/WEB-INF/views/employeeRegister.jsp").forward(request, response);
                     return;
                 }

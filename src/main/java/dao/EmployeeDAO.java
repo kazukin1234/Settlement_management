@@ -255,7 +255,7 @@ public class EmployeeDAO {
 	 * @return 存在すれば true、存在しなければ false
 	 */
 	public boolean existsById(String staffId) {
-	    String sql = "SELECT COUNT(*) FROM staff WHERE staff_id = ? AND delete_flag IN (0, 9)";
+	    String sql = "SELECT COUNT(*) FROM staff WHERE staff_id = ? AND delete_flag IN (0, 1)";
 
 	    try (Connection conn = DBConnection.getConnection();
 	         PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -281,7 +281,7 @@ public class EmployeeDAO {
 	 */
 	
 	public boolean existsByIdExceptSelf(String staffId, String excludeStaffId) {
-	    String sql = "SELECT COUNT(*) FROM staff WHERE staff_id = ? AND staff_id <> ? AND delete_flag IN (0, 9)";
+	    String sql = "SELECT COUNT(*) FROM staff WHERE staff_id = ? AND staff_id <> ? AND delete_flag IN (0, 1)";
 
 	    try (Connection conn = DBConnection.getConnection();
 	         PreparedStatement ps = conn.prepareStatement(sql)) {
