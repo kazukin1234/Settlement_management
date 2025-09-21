@@ -496,9 +496,8 @@ public class ProjectDAO {
 	 * @return 既に存在する場合は true、存在しなければ false
 	 */
 	public boolean existsProjectCode(String projectCode) {
-	    String sql = "SELECT COUNT(*) FROM project_manage WHERE project_code = ? AND delete_flag = 0";
-	    try (Connection conn = DBConnection.getConnection();
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	    String sql = "SELECT COUNT(*) FROM project_manage WHERE project_code = ? AND delete_flag = (0,1)";
+	    try (Connection conn = DBConnection.getConnection();PreparedStatement ps = conn.prepareStatement(sql)) {
 	        ps.setString(1, projectCode);
 	        try (ResultSet rs = ps.executeQuery()) {
 	            if (rs.next()) {
