@@ -58,8 +58,8 @@ table {
 										新規追加</button>-->
 									<button type="submit" name="action" value="edit" id="editBtn"
 										disabled>編集</button>
-									<button type="submit" name="action" value="delete"
-										id="deleteBtn" disabled onclick="return confirm('本当に削除しますか？')">削除</button>
+									<!--  <button type="submit" name="action" value="delete"
+										id="deleteBtn" disabled onclick="return confirm('本当に削除しますか？')">削除</button>-->
 								</div>
 							</th>
 						</tr>
