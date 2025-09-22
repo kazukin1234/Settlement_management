@@ -24,7 +24,7 @@ public class ProjectListDAO {
      */
     public List<Project> getAllProjects() {
         List<Project> list = new ArrayList<>();
-        String sql = "SELECT project_code, project_name FROM project_manage ORDER BY project_code";
+        String sql = "SELECT project_code, project_name FROM project_manage WHERE delete_flag = '0' ORDER BY project_code";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
