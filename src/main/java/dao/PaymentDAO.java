@@ -80,7 +80,7 @@ public class PaymentDAO {
 
 	public List<PaymentBean> reimbursementAll() {
 		// TODO 自動生成されたメソッド・スタブ
-		//一覧に書きこむデータ、立替金
+		//一覧画面に書きこむデータ、立替金
 	    ArrayList<PaymentBean> list = new ArrayList<>();
 
         String sql = "SELECT a.application_id, "+
@@ -148,7 +148,7 @@ public class PaymentDAO {
 	    return details;
 	}
 	
-	//ファイル名書くためのメソッド
+	//エクセルのファイル名を書くためのメソッド
 	public PaymentBean findById(int applicationId) {
 	    PaymentBean bean = null;
 	    String sql = "SELECT a.application_id, a.staff_id, s.name AS staff_name, " +
