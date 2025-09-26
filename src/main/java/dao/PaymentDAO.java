@@ -80,7 +80,7 @@ public class PaymentDAO {
 
 	public List<PaymentBean> reimbursementAll() {
 		// TODO 自動生成されたメソッド・スタブ
-		//ekuselに書きこむデータ、立替金
+		//一覧に書きこむデータ、立替金
 	    ArrayList<PaymentBean> list = new ArrayList<>();
 
         String sql = "SELECT a.application_id, "+
@@ -114,7 +114,7 @@ public class PaymentDAO {
 	}
 	
 	
-	//
+	//精算明細のデータ取得
 	public List<ReimbursementDetailBean> fetchDetails(int applicationId) throws SQLException {
 	    List<ReimbursementDetailBean> details = new ArrayList<>();
 
@@ -148,7 +148,7 @@ public class PaymentDAO {
 	    return details;
 	}
 	
-	
+	//ファイル名書くためのメソッド
 	public PaymentBean findById(int applicationId) {
 	    PaymentBean bean = null;
 	    String sql = "SELECT a.application_id, a.staff_id, s.name AS staff_name, " +

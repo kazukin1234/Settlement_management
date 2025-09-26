@@ -80,7 +80,7 @@ protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws S
                     PaymentBean targetBean = dao.findById(appId);
                     List<ReimbursementDetailBean> details = dao.fetchDetails(appId);
 
-                    // Excel作成（共通ロジックに切り出すと便利）
+                    // Excel作成
                     XSSFWorkbook workbook = createExcel(targetBean, details);
 
                     // ZIPエントリ追加
