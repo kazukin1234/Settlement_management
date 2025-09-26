@@ -114,7 +114,7 @@ public class PaymentDAO {
 	}
 	
 	
-	//精算明細のデータ取得
+	//精算明細のデータ取得、エクセルに書き込むデータとしても使用する
 	public List<ReimbursementDetailBean> fetchDetails(int applicationId) throws SQLException {
 	    List<ReimbursementDetailBean> details = new ArrayList<>();
 
