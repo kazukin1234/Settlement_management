@@ -38,7 +38,7 @@ public class Export_reimbursementServlet extends HttpServlet {
 	        req.setAttribute("paymentList", paymentList);
 
 	     
-	     // モードを export に設定
+	     // モードを export に設定＿
 	        //String mode = "export";
 	        req.setAttribute("mode2", "export");
 
