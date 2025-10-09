@@ -20,7 +20,7 @@ import util.DBConnection;
  */
 public class EmployeeDAO {
 
-	public void initAdminAccount() {
+    public void initAdminAccount() {
 		String sql = "SELECT COUNT(*) FROM staff WHERE staff_id = 'admin'";
 
 		try (Connection conn = DBConnection.getConnection();

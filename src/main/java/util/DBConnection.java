@@ -17,7 +17,7 @@ public class DBConnection {
    //ENV=LOCAL → IS_PROD = false → ローカルDBへ接続
    //ENV が LOCAL 以外（PRODや未設定） → IS_PROD = true → RDSへ接続
   private static final String URL = IS_PROD ?
-      "jdbc:mysql://localhost:3306/abc_system" :
+      "jdbc:mysql://database-seisankanri.c5woismkkuts.ap-northeast-3.rds.amazonaws.com:3306/abc_system" :
       "jdbc:mysql://localhost:3306/abc_system";
   
   //IS_PROD=true → AWS RDSのエンドポイントへ接続
