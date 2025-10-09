@@ -17,14 +17,14 @@ public class DBConnection {
    //ENV=LOCAL → IS_PROD = false → ローカルDBへ接続
    //ENV が LOCAL 以外（PRODや未設定） → IS_PROD = true → RDSへ接続
   private static final String URL = IS_PROD ?
-      "jdbc:mysql://database-seisankanri.c5woismkkuts.ap-northeast-3.rds.amazonaws.com:3306/abc_system_protype" :
-      "jdbc:mysql://localhost:3306/abc_system_protype";
+      "jdbc:mysql://localhost:3306/abc_system" :
+      "jdbc:mysql://localhost:3306/abc_system";
   
   //IS_PROD=true → AWS RDSのエンドポイントへ接続
   //IS_PROD=false → ローカル MySQL へ接続
   
   //http://localhost:9164/abc_system_protype/LoginServlet
-
+  //jdbc:mysql://database-seisankanri.c5woismkkuts.ap-northeast-3.rds.amazonaws.com:3306/abc_system
   private static final String USER = IS_PROD ? "admin" : "root";
   private static final String PASSWORD = IS_PROD ? "Kuma2025" : "";
   
