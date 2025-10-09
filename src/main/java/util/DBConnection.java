@@ -9,13 +9,13 @@ import java.sql.SQLException;
 public class DBConnection {
 
 
-	private static final boolean IS_PROD = !"LOCAL".equalsIgnoreCase(System.getenv("ENV"));
+	private static final boolean IS_PROD = "PROD".equals(System.getenv("ENV"));
 	//環境変数 ENV=LOCAL ならローカルDBに接続
     //それ以外（本番/EC2上など）はRDSに接続
 	
 	
-   //ENV=LOCAL → IS_PROD = false → ローカルDBへ接続
-   //ENV が LOCAL 以外（PRODや未設定） → IS_PROD = true → RDSへ接続
+   //それ以外、または ENV が未設定の場合 → IS_PROD = false → ローカルDBへ接続
+   //サーバー環境変数 ENV が "PROD" の場合 → IS_PROD = true → RDSへ接続
   private static final String URL = IS_PROD ?
       "jdbc:mysql://database-seisankanri.c5woismkkuts.ap-northeast-3.rds.amazonaws.com:3306/abc_system" :
       "jdbc:mysql://localhost:3306/abc_system";
