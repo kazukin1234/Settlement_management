@@ -59,20 +59,24 @@
           <div class="form-section reimbursement-block" style="position: relative;">
             <button type="button" class="remove-btn" onclick="removeReimbursementBlock(this)">×</button>
             <div class="form-group"><label>日付</label><input required type="date" name="date[]" value="${detail.date}" ></div>
-            <div class="form-group"><label>訪問先</label><input required type="text" name="destinations[]" value="${detail.destinations}" /></div>
-            <div class="form-group">
-              <label>PJコード</label>
-              <select name="projectCode[]">
-                <option value="">選択してください</option>
-                <c:forEach var="p" items="${projectList}">
-                  <option value="${p.id}" ${p.id == detail.projectCode ? 'selected' : ''}>${p.id}：${p.name}</option>
-                </c:forEach>
-              </select>
-            </div>
-            <div class="form-group"><label>報告書</label><textarea required name="report[]">${detail.report}</textarea></div>
+      <div class="form-group"><label>支払先</label><input required type="text" name="destinations[]" placeholder="例:○○道具店" /></div>
+    
+    <div class="form-group">
+      <label>PJコード(どれにも該当しない場合はスキップ)</label>
+      <select name="projectCode[]">
+        <option value="">選択してください</option>
+        <c:forEach var="p" items="${projectList}">
+          <option value="${p.id}">${p.id}：${p.name}</option>
+        </c:forEach>
+      </select>
+    </div>
+    
+            
             <div class="form-group"><label>勘定科目</label><input required type="text" name="accountingItem[]" value="${detail.accountingItem}" /></div>
-            <div class="form-group"><label>摘要</label><textarea required name="abstractNote[]">${detail.abstractNote}</textarea></div>
+            <div class="form-group"><label>摘要(内容や目的)</label><textarea required name="abstractNote[]">${detail.abstractNote}</textarea></div>
             <div class="form-group"><label>金額</label><input type="number" name="amount[]" value="${detail.amount}" required></div>
+           <div class="form-group"><label>備考</label><textarea required name="report[]">${detail.report}</textarea></div>
+           
             <div class="form-group">
               <label>領収書添付</label>
               <input type="file" name="receipt_reimbursement_${loop.index}" multiple class="fileInput" onchange="handleFileSelection(this)">
@@ -101,15 +105,16 @@
   </div>
 </div>
 
-<div class="footer">&copy; 2025 ABC株式会社 - All rights reserved.</div>
+<div class="footer">&copy; 2025  - All rights reserved.</div>
 
 <template id="reimbursement-template">
   <div class="form-section reimbursement-block" style="position: relative;">
     <button type="button" class="remove-btn" onclick="removeReimbursementBlock(this)">×</button>
     <div class="form-group"><label>日付</label><input required type="date" name="date[]"></div>
-    <div class="form-group"><label>訪問先</label><input required type="text" name="destinations[]" placeholder="例: ABC株式会社" /></div>
+    <div class="form-group"><label>支払先</label><input required type="text" name="destinations[]" placeholder="例:○○道具店" /></div>
+    
     <div class="form-group">
-      <label>PJコード</label>
+      <label>PJコード(どれにも該当しない場合はスキップ)</label>
       <select name="projectCode[]">
         <option value="">選択してください</option>
         <c:forEach var="p" items="${projectList}">
@@ -117,10 +122,12 @@
         </c:forEach>
       </select>
     </div>
-    <div class="form-group"><label>報告書</label><textarea required name="report[]" placeholder="報告書を入力してください"></textarea></div>
-    <div class="form-group"><label>勘定科目</label><input required type="text" name="accountingItem[]" placeholder="例: 交通費" /></div>
-    <div class="form-group"><label>摘要</label><textarea required name="abstractNote[]" placeholder="内容や目的を入力してください"></textarea></div>
+    
+   <!-- <div class="form-group"><label>報告書</label><textarea  name="report[]" placeholder="報告書を入力してください"></textarea></div> --> 
+    <div class="form-group"><label>勘定科目</label><input required type="text" name="accountingItem[]" placeholder="例:道具代" /></div>
+    <div class="form-group"><label>摘要(内容や目的)</label><textarea required name="abstractNote[]" placeholder="例:ボールペン 1個"></textarea></div>
     <div class="form-group"><label>金額</label><input required type="number" name="amount[]"></div>
+    <div class="form-group"><label>備考</label><textarea  name="report[]" placeholder="備考欄(何もなければ空欄)"></textarea></div>
     <div class="form-group">
       <label>領収書添付</label>
       <input type="file" name="receipt_reimbursement_" multiple class="fileInput" onchange="handleFileSelection(this)">
