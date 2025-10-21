@@ -42,8 +42,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            sudo rm -rf /opt/tomcat/webapps/ROOT /opt/tomcat/webapps/ROOT.war
-            sudo mv /opt/tomcat/webapps/target/ROOT.war /opt/tomcat/webapps/
-            /opt/tomcat/bin/shutdown.sh || true
-            sleep 5
-            /opt/tomcat/bin/startup.sh
+                    sudo /opt/tomcat/bin/shutdown.sh || true
+                    sleep 5
+                    sudo rm -rf /opt/tomcat/webapps/ROOT
+                    sudo /opt/tomcat/bin/startup.sh
