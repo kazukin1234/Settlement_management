@@ -71,7 +71,7 @@ public class LoginServlet extends HttpServlet {
 
 
 
-/////////////////////////////////ハッシュ
+//////////////////////////////////ハッシュ
 
 //package servlet;
 //
