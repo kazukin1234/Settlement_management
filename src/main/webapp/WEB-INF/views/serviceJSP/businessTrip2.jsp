@@ -256,8 +256,8 @@
 									name="expenseTotal[]" readonly value="${detail.expenseTotal}">
 							</div>
 							<div class="form-group">
-								<label>摘要</label>
-								<textarea required name="memo[]" placeholder="メモなど">${detail.memo}</textarea>
+								<label>備考</label>
+								<textarea  name="memo[]" placeholder="備考欄(何もなければスキップ)">${detail.memo}</textarea>
 							</div>
 							<div class="form-group">
 								<label>領収書添付（日当・宿泊費）</label> <input type="file"
@@ -295,7 +295,7 @@
 			</form>
 		</div>
 	</div>
-	<div class="footer">&copy; 2025 ABC株式会社 - All rights reserved.</div>
+	<div class="footer">&copy; 2025  - All rights reserved.</div>
 
 	<script>
 		const startDateStr = "${trip.step1Data.startDate}";

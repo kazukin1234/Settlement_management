@@ -128,8 +128,8 @@
 									readonly value="${detail.transExpenseTotal}">
 							</div>
 							<div class="form-group">
-								<label>摘要</label>
-								<textarea required name="transMemo[]" placeholder="メモなど">${detail.transMemo}</textarea>
+								<label>備考</label>
+								<textarea  name="transMemo[]" placeholder="備考欄(何もなければスキップ)">${detail.transMemo}</textarea>
 							</div>
 							<div class="form-group">
 								<label>領収書添付（交通費）</label> <input type="file"

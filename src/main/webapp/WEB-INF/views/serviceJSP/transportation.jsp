@@ -46,7 +46,8 @@
                 </c:forEach>
               </select>
             </div>
-            <div class="form-group"><label>報告書</label><textarea required name="report[]" placeholder="報告書を書いてください">${detail.report}</textarea></div>
+            
+            <!--  <div class="form-group"><label>報告書</label><textarea  name="report[]" placeholder="報告書を書いてください">${detail.report}</textarea></div>-->
             <div class="form-group"><label>訪問先</label><input required type="text" name="destination[]" placeholder="例: ABC株式会社" value="${detail.destination}"></div>
             <div class="form-group"><label>出発</label><input required type="text" name="departure[]" placeholder="例:東京駅" value="${detail.departure}"></div>
             <div class="form-group"><label>到着</label><input required type="text" name="arrival[]" placeholder="例:大阪駅" value="${detail.arrival}"></div>
@@ -78,7 +79,9 @@
               </select>
             </div>
             <div class="form-group"><label>合計</label><input type="number" name="expenseTotal[]" value="${detail.expenseTotal}" readonly></div>
-            <div class="form-group"><label>摘要</label><textarea required name="transMemo[]" placeholder="メモなど">${detail.transMemo}</textarea></div>
+            <div class="form-group"><label>摘要(内容や目的)</label><textarea required name="transMemo[]" placeholder="例:○○で発生した交通費">${detail.transMemo}</textarea></div>
+            <div class="form-group"><label>備考</label><textarea  name="report[]" placeholder="備考欄(何もなければスキップ)">${detail.report}</textarea></div>
+            
             <div class="form-group">
               <label>領収書添付（交通費）</label>
               <input type="file" name="receipt_transportation_${loop.index}" multiple class="fileInput" onchange="handleFileSelection(this)">
@@ -109,7 +112,7 @@
   </div>
 </div>
 
-<div class="footer">&copy; 2025 ABC株式会社 - All rights reserved.</div>
+<div class="footer">&copy; 2025 - All rights reserved.</div>
 
 <%-- SỬA LỖI: Chỉ giữ lại MỘT template, xóa bỏ phần bị lặp --%>
 <template id="transportation-template">
@@ -124,7 +127,7 @@
         </c:forEach>
       </select>
     </div>
-    <div class="form-group"><label>報告書</label><textarea required name="report[]" placeholder="報告書を書いてください"></textarea></div>
+    <!--  <div class="form-group"><label>報告書</label><textarea required name="report[]" placeholder="報告書を書いてください"></textarea></div> -->
     <div class="form-group"><label>訪問先</label><input type="text" name="destination[]" placeholder="例: ABC株式会社" required></div>
     <div class="form-group"><label>出発</label><input required type="text" name="departure[]" placeholder="例:東京駅"></div>
     <div class="form-group"><label>到着</label><input required type="text" name="arrival[]" placeholder="例:大阪駅"></div>
@@ -148,7 +151,10 @@
       </select>
     </div>
     <div class="form-group"><label>合計</label><input type="number" name="expenseTotal[]" readonly></div>
-    <div class="form-group"><label>摘要</label><textarea required name="transMemo[]" placeholder="メモなど"></textarea></div>
+　　<div class="form-group"><label>摘要(内容や目的)</label><textarea required name="transMemo[]" placeholder="例:○○で発生した交通費">${detail.transMemo}</textarea></div>
+    <div class="form-group"><label>備考</label><textarea  name="report[]" placeholder="備考欄(何もなければスキップ)">${detail.report}</textarea></div>
+             
+    
     <div class="form-group">
       <label>領収書添付（交通費）</label>
       <input type="file" name="receipt_transportation_" multiple class="fileInput" onchange="handleFileSelection(this)">

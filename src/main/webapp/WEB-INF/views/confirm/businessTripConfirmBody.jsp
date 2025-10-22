@@ -171,7 +171,7 @@
 				<div class="detail-extra-info">
 					<c:if test="${not empty detail.memo}">
 						<div>
-							<strong>摘要:</strong>
+							<strong>備考:</strong>
 						</div>
 						<div class="memo-block">${detail.memo}</div>
 					</c:if>
@@ -238,13 +238,16 @@
 								type="number" />円</td>
 					</tr>
 				</table>
+				
 				<div class="detail-extra-info">
 					<c:if test="${not empty detail.transMemo}">
 						<div>
-							<strong>摘要:</strong>
+							<strong>備考:</strong>
 						</div>
 						<div class="memo-block">${detail.transMemo}</div>
 					</c:if>
+					
+					
 					<c:if test="${not empty detail.temporaryFiles}">
 						<div style="margin-top: 10px;">
 							<strong>領収書ファイル:</strong>

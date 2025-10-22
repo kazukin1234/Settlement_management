@@ -143,12 +143,11 @@
 								type="number" />円</td>
 					</tr>
 				</table>
-
 				<div class="detail-extra-info">
 
 					<c:if test="${not empty detail.transMemo}">
 						<div>
-							<strong>摘要:</strong>
+							<strong>摘要(内容や目的):</strong>
 						</div>
 						<div class="memo-block">${detail.transMemo}</div>
 					</c:if>
@@ -156,10 +155,11 @@
 					<c:if
 						test="${not empty detail.report and fn:trim(detail.report) ne ''}">
 						<div>
-							<strong>報告書:</strong>
+							<strong>備考:</strong>
 						</div>
 						<div class="memo-block">${detail.report}</div>
 					</c:if>
+					
 					<c:if test="${not empty detail.temporaryFiles}">
 						<div style="margin-top: 10px;">
 							<strong>領収書ファイル:</strong>
@@ -174,7 +174,6 @@
 					</c:if>
 				</div>
 			</div>
-
 		</c:forEach>
 		
 		<div class="confirm-page-total">

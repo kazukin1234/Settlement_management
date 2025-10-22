@@ -62,7 +62,7 @@
       <div class="form-group"><label>支払先</label><input required type="text" name="destinations[]" placeholder="例:○○道具店" /></div>
     
     <div class="form-group">
-      <label>PJコード(どれにも該当しない場合はスキップ)</label>
+      <label>PJコード</label>
       <select name="projectCode[]">
         <option value="">選択してください</option>
         <c:forEach var="p" items="${projectList}">
@@ -114,7 +114,7 @@
     <div class="form-group"><label>支払先</label><input required type="text" name="destinations[]" placeholder="例:○○道具店" /></div>
     
     <div class="form-group">
-      <label>PJコード(どれにも該当しない場合はスキップ)</label>
+      <label>PJコード</label>
       <select name="projectCode[]">
         <option value="">選択してください</option>
         <c:forEach var="p" items="${projectList}">
@@ -127,7 +127,7 @@
     <div class="form-group"><label>勘定科目</label><input required type="text" name="accountingItem[]" placeholder="例:道具代" /></div>
     <div class="form-group"><label>摘要(内容や目的)</label><textarea required name="abstractNote[]" placeholder="例:ボールペン 1個"></textarea></div>
     <div class="form-group"><label>金額</label><input required type="number" name="amount[]"></div>
-    <div class="form-group"><label>備考</label><textarea  name="report[]" placeholder="備考欄(何もなければ空欄)"></textarea></div>
+    <div class="form-group"><label>備考</label><textarea  name="report[]" placeholder="備考欄(何もなければスキップ)"></textarea></div>
     <div class="form-group">
       <label>領収書添付</label>
       <input type="file" name="receipt_reimbursement_" multiple class="fileInput" onchange="handleFileSelection(this)">
