@@ -133,11 +133,13 @@ private XSSFWorkbook createExcel(PaymentBean targetBean, List<ReimbursementDetai
     headerRow.createCell(1).setCellValue("申請者名");
     headerRow.createCell(2).setCellValue("PJコード");
     headerRow.createCell(3).setCellValue("日付");
-    headerRow.createCell(4).setCellValue("訪問先");
+    headerRow.createCell(4).setCellValue("支払先");
     headerRow.createCell(5).setCellValue("勘定科目");
     headerRow.createCell(6).setCellValue("金額");
     headerRow.createCell(7).setCellValue("摘要");
-    headerRow.createCell(8).setCellValue("総合計金額");
+    headerRow.createCell(8).setCellValue("備考"); //
+    //headerRow.createCell(9).setCellValue("ファイル名");
+    headerRow.createCell(9).setCellValue("総合計金額");
 
     int rowNum = 1;
     for (ReimbursementDetailBean d : details) {
@@ -149,43 +151,45 @@ private XSSFWorkbook createExcel(PaymentBean targetBean, List<ReimbursementDetai
         dataRow.createCell(4).setCellValue(d.getDestinations());
         dataRow.createCell(5).setCellValue(d.getAccountingItem());
 
+        // 金額
         Cell amountCell = dataRow.createCell(6);
         amountCell.setCellValue(d.getAmount());
         amountCell.setCellStyle(yenStyle);
 
+        // 摘要
         if (d.getAbstractNote() != null) {
             dataRow.createCell(7).setCellValue(d.getAbstractNote());
         }
 
+        // 🔹 報告(備考)をExcelに追加
+        if (d.getReport() != null) {
+            dataRow.createCell(8).setCellValue(d.getReport());
+        }
+
+        // 添付ファイル(出力はされない)
         if (d.getTemporaryFiles() != null && !d.getTemporaryFiles().isEmpty()) {
             String fileNames = d.getTemporaryFiles().stream()
                 .map(f -> f.getOriginalFileName())
                 .collect(Collectors.joining(", "));
-            dataRow.createCell(8).setCellValue(fileNames);
+            dataRow.createCell(9).setCellValue(fileNames);
         }
     }
 
     // 合計行
     int totalAmount = details.stream().mapToInt(ReimbursementDetailBean::getAmount).sum();
     Row totalRow = sheet.createRow(rowNum);
-    Cell totalAmountCell = totalRow.createCell(8);
+    Cell totalAmountCell = totalRow.createCell(9);
     totalAmountCell.setCellValue(totalAmount);
     totalAmountCell.setCellStyle(yenStyle);
 
-    // 自動調整
-    for (int i = 0; i <= 9; i++) {
+    // 自動列幅調整
+    for (int i = 0; i <= 10; i++) {
         sheet.autoSizeColumn(i);
     }
 
     return workbook;
 }
 
-	
 
 
-
-	
-	
-	
-	 
-	}
+}

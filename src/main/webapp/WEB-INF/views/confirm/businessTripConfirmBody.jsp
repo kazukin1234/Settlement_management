@@ -130,7 +130,7 @@
 
 		<c:forEach var="detail" items="${trip.step2Details}" varStatus="loop">
 			<div class="sub-section">
-				<h4>明細 ${loop.count}</h4>
+				<h4>精算明細 ${loop.count}</h4>
 				<table class="confirm-table">
 					<tr>
 						<th>地域区分</th>

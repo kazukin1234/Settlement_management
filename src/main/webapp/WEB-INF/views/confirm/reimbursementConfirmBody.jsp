@@ -62,7 +62,7 @@
             <td>${detail.date}</td>
         </tr>
         <tr>
-            <th>訪問先</th>
+            <th>支払先</th>
             <td>${detail.destinations}</td>
         </tr>
         <tr>

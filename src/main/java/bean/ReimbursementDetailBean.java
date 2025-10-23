@@ -103,13 +103,16 @@ public class ReimbursementDetailBean implements Serializable {
     /**
      * 摘要（報告）を取得します。
      */
+    /**
+     * 摘要（報告）を設定します。
+     */
+    
+    
+    
     public String getReport() {
         return report;
     }
 
-    /**
-     * 摘要（報告）を設定します。
-     */
     public void setReport(String report) {
         this.report = report;
     }

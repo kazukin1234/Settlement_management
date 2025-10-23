@@ -59,7 +59,7 @@
           <div class="form-section reimbursement-block" style="position: relative;">
             <button type="button" class="remove-btn" onclick="removeReimbursementBlock(this)">×</button>
             <div class="form-group"><label>日付</label><input required type="date" name="date[]" value="${detail.date}" ></div>
-      <div class="form-group"><label>支払先</label><input required type="text" name="destinations[]" placeholder="例:○○道具店" /></div>
+      <div class="form-group"><label>支払先</label><input required type="text" name="destinations[]" value="${detail.destinations}" placeholder="例:○○道具店" /></div>
     
     <div class="form-group">
       <label>PJコード</label>
@@ -74,8 +74,8 @@
             
             <div class="form-group"><label>勘定科目</label><input required type="text" name="accountingItem[]" value="${detail.accountingItem}" /></div>
             <div class="form-group"><label>摘要(内容や目的)</label><textarea required name="abstractNote[]">${detail.abstractNote}</textarea></div>
-            <div class="form-group"><label>金額</label><input type="number" name="amount[]" value="${detail.amount}" required></div>
-           <div class="form-group"><label>備考</label><textarea required name="report[]">${detail.report}</textarea></div>
+            <div class="form-group"><label>金額（税込）</label><input type="number" name="amount[]" value="${detail.amount}" required></div>
+           <div class="form-group"><label>備考</label><textarea  name="report[]">${detail.report}</textarea></div>
            
             <div class="form-group">
               <label>領収書添付</label>
@@ -111,7 +111,7 @@
   <div class="form-section reimbursement-block" style="position: relative;">
     <button type="button" class="remove-btn" onclick="removeReimbursementBlock(this)">×</button>
     <div class="form-group"><label>日付</label><input required type="date" name="date[]"></div>
-    <div class="form-group"><label>支払先</label><input required type="text" name="destinations[]" placeholder="例:○○道具店" /></div>
+    <div class="form-group"><label>支払先</label><input required type="text" name="destinations[]" value="${detail.destinations}" placeholder="例:○○道具店" /></div>
     
     <div class="form-group">
       <label>PJコード</label>
@@ -126,7 +126,7 @@
    <!-- <div class="form-group"><label>報告書</label><textarea  name="report[]" placeholder="報告書を入力してください"></textarea></div> --> 
     <div class="form-group"><label>勘定科目</label><input required type="text" name="accountingItem[]" placeholder="例:道具代" /></div>
     <div class="form-group"><label>摘要(内容や目的)</label><textarea required name="abstractNote[]" placeholder="例:ボールペン 1個"></textarea></div>
-    <div class="form-group"><label>金額</label><input required type="number" name="amount[]"></div>
+    <div class="form-group"><label>金額（税込）</label><input required type="number" name="amount[]"></div>
     <div class="form-group"><label>備考</label><textarea  name="report[]" placeholder="備考欄(何もなければスキップ)"></textarea></div>
     <div class="form-group">
       <label>領収書添付</label>
