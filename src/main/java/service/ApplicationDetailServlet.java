@@ -90,12 +90,14 @@ public class ApplicationDetailServlet extends HttpServlet {
                 // Thêm logic phân luồng dựa vào context
                 if ("approval".equals(context)) {
                     // --- Cấu hình cho NGƯỜI DUYỆT ---
+                	System.out.println("承認モードになりましたよ");
                     request.setAttribute("showEditButton", false);
                     request.setAttribute("showApprovalActionButtons", true); // Bật cờ cho nút Duyệt/Trả về
                     request.setAttribute("backActionUrl", "/approverApplications"); 
 
                 } else if ("payment".equals(context)) {
                     // --- Cấu hình cho NGƯỜI QUẢN LÝ THANH TOÁN ---
+                	System.out.println("支払モードになりましたよ");
                     request.setAttribute("showEditButton", false);
                     request.setAttribute("showApprovalActionButtons", false);
                     request.setAttribute("showPaymentActionButton", true); // Bật cờ cho nút "Thanh toán"
@@ -108,9 +110,34 @@ public class ApplicationDetailServlet extends HttpServlet {
                     request.setAttribute("backActionUrl", "/Export_reimbursement"); // Quay về trang quản lý thanh toán
                     
                 }
+                
+                else if ("exportbusinesstrip".equals(context)) {
+                    request.setAttribute("showExportButton2", true);
+                    request.setAttribute("showEditButton", false);
+                    request.setAttribute("showApprovalActionButtons", false);
+                    request.setAttribute("backActionUrl", "/Export_businesstrip"); // 出張費のエクスポート一覧へ
+                    
+                }
+                
+                else if ("exporttransportation".equals(context)) {
+                    request.setAttribute("showExportButton3", true);
+                    request.setAttribute("showEditButton", false);
+                    request.setAttribute("showApprovalActionButtons", false);
+                    request.setAttribute("backActionUrl", "/Export_transportation"); // 交通費のエクスポート一覧へ
+                    
+                }
+                
+                
+               //Export_transportation
+                
+                
+                
+                
+                
                 else {
                     // --- Cấu hình cho NHÂN VIÊN (mặc định) ---
-                    request.setAttribute("showEditButton", true);
+                	System.out.println("編集モードになりましたよ");
+                	request.setAttribute("showEditButton", true);
                     request.setAttribute("showApprovalActionButtons", false);
                     request.setAttribute("backActionUrl", "/applicationMain");
                 }
@@ -124,6 +151,10 @@ public class ApplicationDetailServlet extends HttpServlet {
                 rd.forward(request, response);
                 break;
             }
+            
+            
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
             HttpSession session = request.getSession();

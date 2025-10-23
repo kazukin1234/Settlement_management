@@ -71,6 +71,28 @@
     </form>
 </c:if>
     
+        <c:if test="${showExportButton2}">
+    <form action="${pageContext.request.contextPath}/Export_businesstrip" method="post" style="display:inline;">
+        <input type="hidden" name="applicationId" value="${applicationId}"/>
+         <input type="hidden" name="staffName" value="${p.staffName}" />
+        <button type="submit" class="approve-btn" onclick="return confirm('excelファイルで出力します。よろしいですか？')">エクスポート(.xlsx)</button>
+    </form>
+</c:if>
+    
+     <c:if test="${showExportButton3}">
+    <form action="${pageContext.request.contextPath}/Export_transportation" method="post" style="display:inline;">
+        <input type="hidden" name="applicationId" value="${applicationId}"/>
+         <input type="hidden" name="staffName" value="${p.staffName}" />
+        <button type="submit" class="approve-btn" onclick="return confirm('excelファイルで出力します。よろしいですか？')">エクスポート(.xlsx)</button>
+    </form>
+</c:if>
+    
+    
+    
+    
+    
+    
+    
 
 </div>
 <div class="footer">

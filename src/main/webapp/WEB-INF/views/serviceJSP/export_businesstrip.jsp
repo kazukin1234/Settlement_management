@@ -139,7 +139,7 @@
         const mode2 = document.body.dataset.mode2; 
         
         let url = 'applicationDetail?id=' + id;
-        url += '&context=exportReimbursement';
+        url += '&context=exportbusinesstrip';
 
           if (mode2 == 'payment') {
           url += '&context=payment';

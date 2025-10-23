@@ -37,12 +37,12 @@ public class Export_businessTripservlet extends HttpServlet {
             List<PaymentBean> paymentList = dao.businesstripAll();
             req.setAttribute("paymentList2", paymentList);
 
-         
+            
          // モードを export に設定＿
             //String mode = "export";
-            req.setAttribute("mode2", "export");
+            req.setAttribute("mode2", "exportbusinesstrip");
 
-            req.setAttribute("showExportButton", true);
+            req.setAttribute("showExportButton2", true);
            
 
 
