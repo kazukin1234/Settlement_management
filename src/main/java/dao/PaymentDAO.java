@@ -114,7 +114,7 @@ public class PaymentDAO {
 	}
 	
 	
-	//精算明細のデータ取得、エクセルに書き込むデータとしても使用する
+	//精算明細のデータ取得、エクセルに書き込むデータとしても使用する。立替金
 	public List<ReimbursementDetailBean> fetchDetails(int applicationId) throws SQLException {
 	    List<ReimbursementDetailBean> details = new ArrayList<>();
 
@@ -147,6 +147,85 @@ public class PaymentDAO {
 	        }
 	    return details;
 	}
+	
+	
+	public List<PaymentBean> businesstripAll() {
+		// TODO 自動生成されたメソッド・スタブ
+		/**一覧画面に書きこむデータ、出張費*/
+	    ArrayList<PaymentBean> list = new ArrayList<>();
+
+	    String sql = "SELECT a.application_id, "
+	            + "a.staff_id, s.name AS staff_name, a.application_type, a.created_at, "
+	            + "a.updated_at, a.amount, a.status FROM application_header a "
+	            + "LEFT JOIN staff s ON a.staff_id = s.staff_id "
+	            + "WHERE a.delete_flag = 0 AND a.status IN ('承認済み', '支払済み') "
+	            + "AND a.application_type = '出張費' ORDER BY a.created_at DESC";
+
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                PaymentBean bean = new PaymentBean();
+                bean.setApplicationId(rs.getInt("application_id"));
+                bean.setStaffId(rs.getString("staff_id"));
+                bean.setStaffName(rs.getString("staff_name"));
+                bean.setApplicationType(rs.getString("application_type"));
+                bean.setCreatedAt(rs.getTimestamp("created_at")); // ← Sửa tên hàm & cột ở đây
+                bean.setUpdatedAt(rs.getTimestamp("updated_at"));
+                bean.setAmount(rs.getInt("amount"));
+                bean.setStatus(rs.getString("status"));
+                list.add(bean);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//エクセルのファイル名を書くためのメソッド
 	public PaymentBean findById(int applicationId) {

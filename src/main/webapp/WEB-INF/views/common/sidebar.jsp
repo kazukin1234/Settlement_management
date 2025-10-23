@@ -26,6 +26,7 @@ String department = (String) session.getAttribute("department_id");
 			<hr>
 			<li><a href="<%=request.getContextPath()%>/approverApplications">精算承認</a></li>
 			<li><a href="<%=request.getContextPath()%>/Export_reimbursement">エクスポート(立替金)</a></li>
+			<li><a href="<%=request.getContextPath()%>/Export_businesstrip">エクスポート(出張費)</a></li>
 			<hr>
 			<li><a
 				href="<%=request.getContextPath()%>/project_management_view">プロジェクト管理</a></li>
@@ -45,6 +46,7 @@ String department = (String) session.getAttribute("department_id");
 			<hr>
             <li><a href="<%=request.getContextPath()%>/approverApplications">精算承認</a></li>
             <li><a href="<%=request.getContextPath()%>/Export_reimbursement">エクスポート(立替金)</a></li>
+            <li><a href="<%=request.getContextPath()%>/Export_businesstrip">エクスポート(出張費)</a></li>
             <hr>
 			
 			
@@ -61,7 +63,7 @@ String department = (String) session.getAttribute("department_id");
 			} else if (("P0001".equals(position) && "D0001".equals(department))||
                     ("P0001".equals(position) && "D0003".equals(department))  ){
 			%>
-			<!-- 部長/システム事業部  営業部 -->
+			<!-- 部長/IT部  営業部 -->
 			<li><a href="<%=request.getContextPath()%>/applicationMain"
 				class="btn">申請一覧</a></li>
 			<hr>

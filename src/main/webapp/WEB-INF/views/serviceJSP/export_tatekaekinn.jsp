@@ -31,7 +31,7 @@
 								<th class="th-action-toolbar" colspan="100" style="text-align: right;">
 									<div class="action-toolbar">
 										<div class="spacer"></div>
-										<input type="text" id="staffSearchInput" placeholder="社員IDで検索" maxlength="5" style="padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+										<input type="text" id="staffSearchInput" placeholder="社員IDで検索" maxlength="100" style="padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
 									<button id="paidBtn" type="submit"
     						style="background-color:#FFF ;  color: green; border:1px solid green; padding: 8px 16px; border-radius: 4px;"
     						onclick="return confirm('excelファイルで出力します。よろしいですか？')">エクスポート(.xlsx)

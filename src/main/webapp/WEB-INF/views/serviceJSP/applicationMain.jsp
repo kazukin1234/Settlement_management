@@ -124,7 +124,7 @@ List<Application> applications = (List<Application>) request.getAttribute("appli
 	}
 	%>
 
-	<div class="footer">&copy; 2025 ABC株式会社 - All rights reserved.</div>
+	<div class="footer">&copy; 2025  - All rights reserved.</div>
 
 	<script>
     const checkboxes = document.querySelectorAll('.row-check');

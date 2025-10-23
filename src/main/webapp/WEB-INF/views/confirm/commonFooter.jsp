@@ -67,12 +67,12 @@
     <form action="${pageContext.request.contextPath}/Export_reimbursement" method="post" style="display:inline;">
         <input type="hidden" name="applicationId" value="${applicationId}"/>
          <input type="hidden" name="staffName" value="${p.staffName}" />
-        <button type="submit" class="approve-btn" onclick="return confirm('excelファイルでエクスポートします。よろしいですか？')">エクスポート(.xlsx)</button>
+        <button type="submit" class="approve-btn" onclick="return confirm('excelファイルで出力します。よろしいですか？')">エクスポート(.xlsx)</button>
     </form>
 </c:if>
     
 
 </div>
 <div class="footer">
-  &copy; 2025 ABC株式会社 - All rights reserved.
+  &copy; 2025 - All rights reserved.
 </div>
