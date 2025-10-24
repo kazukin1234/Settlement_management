@@ -52,14 +52,14 @@ public class ReimbursementDetailBean implements Serializable {
     }
 
     /**
-     * 行き先を取得します。
+     * 支払先を取得します。
      */
     public String getDestinations() {
         return destinations;
     }
 
     /**
-     * 行き先を設定します。
+     * 支払先を設定します。
      */
     public void setDestinations(String destinations) {
         this.destinations = destinations;

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import bean.BusinessTripBean;
+//*出張費申請入力画面を出すためのサーブレット*/
 
 @WebServlet("/businessTripConfirm")
 public class BusinessTripConfirmServlet extends HttpServlet {

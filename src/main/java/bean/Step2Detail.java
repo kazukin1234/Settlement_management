@@ -153,7 +153,7 @@ public class Step2Detail implements Serializable {
     }
 
     /**
-     * メモを取得します。
+     * 備考を取得します。
      * @return メモ
      */
     public String getMemo() {
@@ -183,6 +183,13 @@ public class Step2Detail implements Serializable {
     public void setTemporaryFiles(List<UploadedFile> temporaryFiles) {
         this.temporaryFiles = temporaryFiles;
     }
+    
+    
+    
+    
+    
+    
+    
     public List<String> getAdjustmentOptions() {
         return adjustmentOptions;
     }

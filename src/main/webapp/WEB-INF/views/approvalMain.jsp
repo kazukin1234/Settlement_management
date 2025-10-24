@@ -12,7 +12,7 @@ if (mode == null)
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>承認一覧 - ABC株式会社</title>
+<title>承認一覧</title>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/static/css/style.css">
 <link rel="stylesheet"
@@ -62,7 +62,7 @@ if (mode == null)
 										<option value="提出済み">提出済み</option>
 										<option value="差戻し">差戻し</option>
 										<option value="承認済み">承認済み</option>
-										<option value="支払済み">支払済み</option>
+										<!--  <option value="支払済み">支払済み</option>-->
 								</select></th>
 							</tr>
 						</thead>

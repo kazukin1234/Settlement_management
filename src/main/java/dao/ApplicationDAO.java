@@ -320,6 +320,7 @@ public class ApplicationDAO extends DBConnection{
 	        JOIN staff s ON ah.staff_id = s.staff_id
 	        WHERE s.department_id = ?
 	          AND ah.status != '未提出'
+	          AND ah.status != '支払済み'
 	          AND ah.delete_flag IN (0, 9)
 	          AND s.delete_flag IN (0, 9)
 	        ORDER BY ah.created_at DESC

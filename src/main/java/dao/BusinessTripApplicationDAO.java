@@ -85,7 +85,9 @@ public class BusinessTripApplicationDAO {
             if (rs.next()) {
                 tripApplicationId = rs.getInt("trip_application_id");
                 Step1Data step1Data = new Step1Data();
+                
                 step1Data.setApplicationId(applicationId);
+                
                 step1Data.setStartDate(rs.getDate("start_date").toString());
                 step1Data.setEndDate(rs.getDate("end_date").toString());
                 step1Data.setProjectCode(rs.getString("project_code"));
@@ -109,15 +111,18 @@ public class BusinessTripApplicationDAO {
                 Step2Detail detail = new Step2Detail();
                 int allowanceDetailId = rs.getInt("detail_id");
                 //... (set các thuộc tính khác cho detail)
+                
                 detail.setRegionType(rs.getString("region_type"));
                 detail.setTripType(rs.getString("trip_type"));
+                detail.setBurden(rs.getString("burden"));
                 detail.setHotel(rs.getString("hotel"));
                 detail.setBurden(rs.getString("burden"));
-                detail.setHotelFee(rs.getInt("hotel_fee"));
                 detail.setDailyAllowance(rs.getInt("daily_allowance"));
+                detail.setHotelFee(rs.getInt("hotel_fee"));
                 detail.setDays(rs.getInt("days"));
                 detail.setExpenseTotal(rs.getInt("expense_total"));
                 detail.setMemo(rs.getString("memo"));
+                
                 String adjustmentOptionsStr = rs.getString("adjustment_options");
                 if (adjustmentOptionsStr != null && !adjustmentOptionsStr.isEmpty()) {
                     // Chuyển chuỗi (ví dụ: "half_day,bonus") thành List và set vào đối tượng detail
@@ -126,6 +131,7 @@ public class BusinessTripApplicationDAO {
                     // Nếu không có dữ liệu, set một danh sách rỗng để tránh lỗi NullPointerException
                     detail.setAdjustmentOptions(new ArrayList<>());
                 }
+                
                 String fileSql = "SELECT original_file_name, stored_file_path FROM receipt_file WHERE block_id = ? AND block_type = 'allowance_detail'";
                 try (PreparedStatement psFile = conn.prepareStatement(fileSql)) {
                     psFile.setInt(1, allowanceDetailId);
