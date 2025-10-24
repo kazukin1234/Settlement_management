@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -134,125 +135,128 @@ public class Export_businessTripservlet extends HttpServlet {
      * 出張申請データをExcel形式で作成する。メソッド
      * beanのデータを入れるよ
      */
-    private XSSFWorkbook createExcel(PaymentBean bean, BusinessTripBean tripBean) {
+  private XSSFWorkbook createExcel(PaymentBean bean, BusinessTripBean tripBean) {
 
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        
-        // 書式
-        CellStyle yenStyle = workbook.createCellStyle();
-        DataFormat format = workbook.createDataFormat();
-        yenStyle.setDataFormat(format.getFormat("#,##0\"円\""));
-        yenStyle.setAlignment(HorizontalAlignment.LEFT);
+    XSSFWorkbook workbook = new XSSFWorkbook();
+    Sheet s1 = workbook.createSheet("出張費申請");
 
-        
-        // === Step1 ===
-        Sheet s1 = workbook.createSheet("出張費申請");
-        
-        Step1Data step1 = tripBean.getStep1Data();
-        Row header1=s1.createRow(0);
-        int c=0;
-        int row = 1;
-        Row header2 = s1.createRow(row);
-        
-        header1.createCell(c++).setCellValue("社員ID");
-        header2.createCell(0).setCellValue(bean.getStaffId());
-        header1.createCell(c++).setCellValue("申請者名");
-        header2.createCell(1).setCellValue(bean.getStaffName());
-        
-        header1.createCell(c++).setCellValue("基本情報");
-        header1.createCell(c++).setCellValue("出張開始日");
-        header1.createCell(c++).setCellValue("出張終了日");
-        header1.createCell(c++).setCellValue("PJコード");
-        header1.createCell(c++).setCellValue("出張報告");
-        header2.createCell(2).setCellValue(step1.getStartDate());
-        header2.createCell(3).setCellValue(step1.getEndDate());
-        header2.createCell(4).setCellValue(step1.getProjectCode());
-        header2.createCell(5).setCellValue(step1.getTripReport());
-        
-        
-        // === Step2 ===
-        //Sheet s2 = workbook.createSheet("Step2 宿泊・手当明細");
-        header1.createCell(c++).setCellValue("日当・宿泊費明細");
-        header1.createCell(c++).setCellValue("地域区分");
-        header1.createCell(c++).setCellValue("出張区分");
-        header1.createCell(c++).setCellValue("負担者");
-        header1.createCell(c++).setCellValue("宿泊先");
-        header1.createCell(c++).setCellValue("日当");
-        header1.createCell(c++).setCellValue("宿泊費");
-        header1.createCell(c++).setCellValue("日数");
-        header1.createCell(c++).setCellValue("合計");
-        header1.createCell(c++).setCellValue("備考");
-        
-        
-        List<Step2Detail> step2List = tripBean.getStep2Details();
-        
-        for (Step2Detail d : step2List) {
-        	Row header21 = s1.createRow(row++);
-        	
-            header21.createCell(7).setCellValue(d.getRegionType());
-            header21.createCell(8).setCellValue(d.getTripType());
-            header21.createCell(9).setCellValue(d.getBurden());
-            header21.createCell(10).setCellValue(d.getHotel());
-            header21.createCell(11).setCellValue(d.getDailyAllowance());
-            header21.createCell(12).setCellValue(d.getHotelFee());
-            header21.createCell(13).setCellValue(d.getDays());
-            header21.createCell(14).setCellValue(d.getExpenseTotal());
-            header21.createCell(15).setCellValue(d.getMemo());
-        }
+    // === 書式設定 ===
+    CellStyle yenStyle = workbook.createCellStyle();
+    DataFormat format = workbook.createDataFormat();
+    yenStyle.setDataFormat(format.getFormat("#,##0\"円\""));
+    yenStyle.setAlignment(HorizontalAlignment.LEFT);
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        // === Step3 ===
-        //Sheet s3 = workbook.createSheet("Step3 交通費明細");
-        header1.createCell(c++).setCellValue("交通費明細");
-        header1.createCell(c++).setCellValue("訪問先");//
-        header1.createCell(c++).setCellValue("出発地");
-        header1.createCell(c++).setCellValue("到着地");
-        header1.createCell(c++).setCellValue("交通機関");
-        header1.createCell(c++).setCellValue("金額");
-        header1.createCell(c++).setCellValue("区分");
-        header1.createCell(c++).setCellValue("負担者");
-        //header1.createCell(c++).setCellValue("合計");
-        header1.createCell(c++).setCellValue("備考");
-        
-        List<Step3Detail> step3List = tripBean.getStep3Details();
-        int row1 = row;
-        for (Step3Detail d : step3List) {
-        	Row header22 = s1.createRow(row1++);
-        	
-        	header22.createCell(17).setCellValue(d.getDeparture());
-            header22.createCell(18).setCellValue(d.getDeparture());
-            header22.createCell(19).setCellValue(d.getArrival());
-            header22.createCell(20).setCellValue(d.getTransport());
-            header22.createCell(21).setCellValue(d.getTransExpenseTotal());
-            header22.createCell(22).setCellValue(d.getTransTripType());
-            header22.createCell(23).setCellValue(d.getTransBurden());
-            header22.createCell(24).setCellValue(d.getTransMemo());
-        }
-        
-    
-     
-        
-        header1.createCell(c++).setCellValue("総合計金額");
-        Row header_kingaku = s1.createRow(row1++);
-        header_kingaku.createCell(25).setCellValue(tripBean.getTotalAmount());
+    int row = 0;
+    int c = 0;
 
-        return workbook;
+    // === Step1 ===
+    Step1Data step1 = tripBean.getStep1Data();
+    Row header1 = s1.createRow(row++);
+    Row data1 = s1.createRow(row++);
+
+    header1.createCell(c).setCellValue("社員ID");
+    data1.createCell(c++).setCellValue(bean.getStaffId());
+
+    header1.createCell(c).setCellValue("申請者名");
+    data1.createCell(c++).setCellValue(bean.getStaffName());
+
+    header1.createCell(c).setCellValue("出張開始日");
+    data1.createCell(c++).setCellValue(step1.getStartDate());
+
+    header1.createCell(c).setCellValue("出張終了日");
+    data1.createCell(c++).setCellValue(step1.getEndDate());
+
+    header1.createCell(c).setCellValue("PJコード");
+    data1.createCell(c++).setCellValue(step1.getProjectCode());
+
+    header1.createCell(c).setCellValue("出張報告");
+    data1.createCell(c++).setCellValue(step1.getTripReport());
+
+    // === Step2 ===
+    List<Step2Detail> step2List = tripBean.getStep2Details();
+    header1.createCell(c++).setCellValue("日当・宿泊費明細");
+    header1.createCell(c++).setCellValue("地域区分");
+    header1.createCell(c++).setCellValue("出張区分");
+    header1.createCell(c++).setCellValue("負担者");
+    header1.createCell(c++).setCellValue("宿泊先");
+    header1.createCell(c++).setCellValue("日当");
+    header1.createCell(c++).setCellValue("宿泊費");
+    header1.createCell(c++).setCellValue("日数");
+    header1.createCell(c++).setCellValue("合計");
+    header1.createCell(c++).setCellValue("備考");
+
+    int startStep2Col = 7; // Step2開始列
+    int step2RowIndex = 1; // データ行
+    for (Step2Detail d : step2List) {
+        Row r = s1.getRow(step2RowIndex);
+        if (r == null) r = s1.createRow(step2RowIndex);
+        int col = startStep2Col;
+        
+        r.createCell(col++).setCellValue(d.getRegionType());
+        r.createCell(col++).setCellValue(d.getTripType());
+        r.createCell(col++).setCellValue(d.getBurden());
+        r.createCell(col++).setCellValue(d.getHotel());
+        Cell cell1 = r.createCell(col++);
+        cell1.setCellValue(d.getDailyAllowance());
+        cell1.setCellStyle(yenStyle);
+
+        Cell cell2 = r.createCell(col++);
+        cell2.setCellValue(d.getHotelFee());
+        cell2.setCellStyle(yenStyle);
+
+        r.createCell(col++).setCellValue(d.getDays());
+        
+        Cell cell3 = r.createCell(col++);
+        cell3.setCellValue(d.getExpenseTotal());
+        cell3.setCellStyle(yenStyle);
+        r.createCell(col++).setCellValue(d.getMemo());
+        step2RowIndex++;
     }
+
+    // === Step3 ===
+    List<Step3Detail> step3List = tripBean.getStep3Details();
+
+    int startStep3Col = 16; // Step3開始列（横方向）
+    int step3RowIndex = 1;
+    header1.createCell(startStep3Col).setCellValue("交通費明細");
+    header1.createCell(startStep3Col+ 1).setCellValue("訪問先");
+    header1.createCell(startStep3Col + 2).setCellValue("出発地");
+    header1.createCell(startStep3Col + 3).setCellValue("到着地");
+    header1.createCell(startStep3Col + 4).setCellValue("交通機関");
+    header1.createCell(startStep3Col + 5).setCellValue("金額");
+    header1.createCell(startStep3Col + 6).setCellValue("区分");
+    header1.createCell(startStep3Col + 7).setCellValue("負担者");
+    header1.createCell(startStep3Col + 8).setCellValue("備考");
+
+    
+    for (Step3Detail d : step3List) {
+        Row r = s1.getRow(step3RowIndex);
+        if (r == null) r = s1.createRow(step3RowIndex);
+        int col = 17;
+        
+        r.createCell(col++).setCellValue(d.getTransProject());
+        r.createCell(col++).setCellValue(d.getDeparture());
+        r.createCell(col++).setCellValue(d.getArrival());
+        r.createCell(col++).setCellValue(d.getTransport());
+        
+        Cell cell4 = r.createCell(col++);
+        cell4.setCellValue(d.getTransExpenseTotal());
+        cell4.setCellStyle(yenStyle);
+
+        r.createCell(col++).setCellValue(d.getTransTripType());
+        r.createCell(col++).setCellValue(d.getTransBurden());
+        r.createCell(col++).setCellValue(d.getTransMemo());
+        step3RowIndex++;
+    }
+
+    // === 総合計 ===
+    int totalCol = startStep3Col + 8;
+    Row totalRow = s1.createRow(step3RowIndex);
+    header1.createCell(startStep3Col + 9).setCellValue("総合計金額");
+    
+    Cell cell5 = totalRow.createCell(totalCol + 1);
+    cell5.setCellValue(tripBean.getTotalAmount());
+    cell5.setCellStyle(yenStyle);
+    return workbook;
+}
 }
