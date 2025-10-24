@@ -55,6 +55,6 @@
 		</div>
 	</div>
 
-	<div class="footer">&copy; 2025 ABC株式会社 - All rights reserved.</div>
+	<div class="footer">&copy; 2025 株式会社khronos - All rights reserved.</div>
 </body>
 </html>

@@ -257,6 +257,14 @@ public class Export_businessTripservlet extends HttpServlet {
     Cell cell5 = totalRow.createCell(totalCol + 1);
     cell5.setCellValue(tripBean.getTotalAmount());
     cell5.setCellStyle(yenStyle);
+    
+    // 自動列幅調整
+    for (int i = 0; i <= 13; i++) {
+        s1.autoSizeColumn(i);
+    }
+
+    
+    
     return workbook;
 }
 }
