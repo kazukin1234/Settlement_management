@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("countMiteishutsu", statusCount.getOrDefault("未提出", 0));
             request.setAttribute("countTeishutsu", statusCount.getOrDefault("提出済み", 0));
             request.setAttribute("countSashimodoshi", statusCount.getOrDefault("差戻し", 0));
-
+            
 
             RoleUtil.UserRole role = RoleUtil.detectRole(staff.getPositionId(), staff.getDepartmentId());
             session.setAttribute("userRole", role);
