@@ -18,11 +18,13 @@ public class DBConnection {
   private static final boolean IS_PROD = "PROD".equals(System.getenv("ENV"));
 
   private static final String URL = IS_PROD ?
-      "jdbc:mysql://abc-db.c7yye40qgcj3.ap-northeast-3.rds.amazonaws.com:3306/abc_system" :
-      "jdbc:mysql://localhost:3306/abc_system";
+		    "jdbc:mysql://databasemain.c5woismkkuts.ap-northeast-3.rds.amazonaws.com:3306/abc_system" :
+		    "jdbc:mysql://localhost:3306/abc_system";
 
+
+  
   private static final String USER = IS_PROD ? "admin" : "root";
-  private static final String PASSWORD = IS_PROD ? "pass1234" : "";
+  private static final String PASSWORD = IS_PROD ? "Kuma2025" : "";
     /**
      * データベースとの接続を取得します。
      *
